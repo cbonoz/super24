@@ -1,0 +1,9 @@
+node_modules
+build
+.next*
+.DS_Store
+dcrowdcontract
+data
+img
+yarn.lock
+package-lock.json
