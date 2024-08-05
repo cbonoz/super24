@@ -1,13 +1,13 @@
 
+Superhack 2024
+
+
+<!--
 
 
 While the funding is proceeding you don't tie up your funds.
 
 Earn yield until the project is actually executed.
-
-
-<!--
-
 
 Optimism: Multichain - submit to multiple optimism L2 chains.
 Base: Payments/social (evm compatible)
