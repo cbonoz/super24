@@ -6,35 +6,35 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 
-const Creator = () => {
-    const [requestId, setRequestId] = useState<string>('')
+const Project = () => {
+    const [pageId, setPageId] = useState<string>('')
     const router = useRouter()
 
     return (
         <div className="flex flex-row items-center justify-center mt-8">
             <BasicCard
-                title="Find creator"
-                description="Find and find a creator page using your wallet."
+                title="Find project"
+                description="Find and find a project page using your wallet."
                 className="min-w-[400px] p-4"
             >
                 <Input
-                    placeholder="Enter creator handle"
-                    value={requestId}
-                    onChange={(e) => setRequestId(e.target.value)}
+                    placeholder="Enter project handle"
+                    value={pageId}
+                    onChange={(e) => setPageId(e.target.value)}
                 />
 
                 <Button
                     className="mt-4"
                     onClick={() => {
-                        console.log('Go to creator')
-                        router.push(`/creator/${requestId}`)
+                        console.log('Go to project')
+                        router.push(`/project/${pageId}`)
                     }}
                 >
-                    Go to creator page
+                    Go to project page
                 </Button>
             </BasicCard>
         </div>
     )
 }
 
-export default Creator
+export default Project

@@ -15,14 +15,14 @@ export const RouteButtons = ({className}: Props) => {
 				className="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
 				onClick={() => router.push("/upload")}
 			>
-				Create creator page
+				Create project page
 			</Button>
 
 			<Button
 				className="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
-				onClick={() => router.push("/creator")}
+				onClick={() => router.push("/project")}
 			>
-				Find creator page
+				Find project page
 			</Button>
 		</div>
 	);

@@ -4,18 +4,18 @@ import { formatDate } from "./utils";
 export const DEMO_REQUEST: DcrowdData = {
 	handle: "cb-videos",
 	name: "CB productions",
-	description: "This is a creator page",
+	description: "This is a project page",
 };
 
 export const DEMO_METADATA: ContractMetadata = {
 	handle: "cb-videos",
-	creatorName: "CB productions",
-	creatorDescription: "This is a creator page",
+	projectName: "CB productions",
+	projectDescription: "This is a project page",
 	initialVideoUrls: [
 		"https://www.youtube.com/watch?v=TcMBFSGVi1c",
 		"https://www.youtube.com/watch?v=6ZfuNTqbHE8",
 	],
-	creatorAddress: "0xf4982D4aC99d25d89Cc8993a88Dc643832B1515b",
+	projectAddress: "0xf4982D4aC99d25d89Cc8993a88Dc643832B1515b",
 	requests: [
 		{
 			handle: "cb-videos",

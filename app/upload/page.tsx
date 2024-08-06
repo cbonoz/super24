@@ -1,5 +1,5 @@
 import BasicCard from '@/components/basic-card'
-import CreatorForm from '@/components/creator-upload-form'
+import ProjectForm from '@/components/main-upload-form'
 import { siteConfig } from '@/util/site-config'
 
 const Upload = () => {
@@ -9,10 +9,10 @@ const Upload = () => {
             {/* make min width 400 */}
             <BasicCard
                 className="w-[600px] p-4"
-                title="Create new creator page"
-                description="Create a new creator page. This item will become publicly available for other users to discover."
+                title="Create new project page"
+                description="Create a new project page. This item will become publicly available for other users to discover."
             >
-                <CreatorForm />
+                <ProjectForm />
             </BasicCard>
 
             <div>

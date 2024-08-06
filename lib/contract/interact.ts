@@ -9,10 +9,10 @@ export const processMetadata = (result: any[], allowInvalid?: boolean): Contract
 	const createdAt = formatDate(Number(result[7]) * 1000);
 	const metadata = {
 		handle: result[0],
-		creatorName: result[1],
-		creatorDescription: result[2],
+		projectName: result[1],
+		projectDescription: result[2],
 		initialVideoUrls,
-		creatorAddress: result[4],
+		projectAddress: result[4],
 		requests: result[5],
 		active: result[6],
 		createdAt,
@@ -41,10 +41,10 @@ export const processMetadataObject = (
 		.map((url: string) => url.trim());
 	const metadata = {
 		handle: result.handle,
-		creatorName: result.creatorName,
-		creatorDescription: result.creatorDescription,
+		projectName: result.projectName,
+		projectDescription: result.projectDescription,
 		initialVideoUrls,
-		creatorAddress: result.creatorAddress,
+		projectAddress: result.projectAddress,
 		requests: result.requests.filter((r: VideoRequest) => !!r.createdAt).map((r: VideoRequest) => {
 			return {
 				...r,

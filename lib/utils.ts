@@ -38,7 +38,7 @@ export const getExplorerUrl = (address?: string, chain?: Chain, isTx?: boolean) 
 };
 
 export const getPlaceholderDescription = () => {
-	return `I make funny videos for a living. I'm a creator on ${window.location.origin}.`;
+	return `I make funny videos for a living. I'm a project on ${window.location.origin}.`;
 };
 
 export const getReadableError = (err: any) => {
@@ -75,7 +75,7 @@ export const getNameFromUser = (user: any) => {
 	return `${user.firstName} ${user.lastName}`;
 };
 
-export const dcrowdUrl = (address: string) => `${window.location.origin}/creator/${address}`;
+export const dcrowdUrl = (address: string) => `${window.location.origin}/project/${address}`;
 
 export const termsUrl = () => `${window.location.origin}/terms`;
 

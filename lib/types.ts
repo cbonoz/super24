@@ -14,10 +14,10 @@ export interface VideoRequest {
 
     // struct Metadata {
     //     string handle;
-    //     string creatorName;
-    //     string creatorDescription;
+    //     string projectName;
+    //     string projectDescription;
     //     string initialVideoUrls;
-    //     address creatorAddress;
+    //     address projectAddress;
     //     VideoRequest[] requests;
     //     bool active;
     //     uint createdAt;
@@ -25,10 +25,10 @@ export interface VideoRequest {
     // }
 export interface ContractMetadata {
     handle: string
-    creatorName: string
-    creatorDescription: string
+    projectName: string
+    projectDescription: string
     initialVideoUrls: any
-    creatorAddress: string
+    projectAddress: string
     requests: VideoRequest[]
     active: boolean
     createdAt: string

@@ -16,7 +16,7 @@ const NavHeader = () => {
 
 	// Get route from router
 	const pathname = usePathname();
-	const isDcrowd = pathname.includes("/creator/");
+	const isDcrowd = pathname.includes("/project/");
 
 	return (
 		<header className="flex items-center h-16 bg-white-800 text-black px-4  border-b-4 border-gray-500 sticky top-0 z-50 bg-white">
@@ -29,11 +29,11 @@ const NavHeader = () => {
 			{!isDcrowd && (
 				<nav className="flex">
 					<a href="/upload" className="text-gray-500 hover:underline mx-4">
-						Create creator page
+						Create project page
 					</a>
 					|
-					<a href="/creator" className="text-gray-500 hover:underline mx-4">
-						Find creator page
+					<a href="/project" className="text-gray-500 hover:underline mx-4">
+						Find project page
 					</a>
 					|
 					<a href="/about" className="text-gray-500 hover:underline mx-4">

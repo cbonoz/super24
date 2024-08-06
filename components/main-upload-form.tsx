@@ -42,16 +42,16 @@ import { siteConfig } from "@/util/site-config";
 
 const formSchema = z.object({
 	handle: z.string().min(3, {
-		message: "Creator page handle must be at least 3 characters",
+		message: "Project page handle must be at least 3 characters",
 	}),
 	title: z.string().min(3, {
-		message: "Creator name must be at least 3 characters.",
+		message: "Project name must be at least 3 characters.",
 	}),
 	videoUrls: z.string().optional(),
 	description: z.string(),
 });
 
-function CreatorForm() {
+function ProjectForm() {
 	const [result, setResult] = useState<any>();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<any>(null);
@@ -165,9 +165,9 @@ function CreatorForm() {
 							name="handle"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Enter desired creator page handle</FormLabel>
+									<FormLabel>Enter desired project page handle</FormLabel>
 									<FormControl>
-										<Input placeholder={`Creator page handle`} {...field} />
+										<Input placeholder={`Project page handle`} {...field} />
 									</FormControl>
 									<FormDescription>
 										The handle defines the unique url of the page. The handle should be lower case
@@ -184,14 +184,14 @@ function CreatorForm() {
 							name="title"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Enter creator name</FormLabel>
+									<FormLabel>Enter project name</FormLabel>
 									<FormControl>
 										<Input
-											placeholder={`Creator page name that will be shown at the top of your page`}
+											placeholder={`Project page name that will be shown at the top of your page`}
 											{...field}
 										/>
 									</FormControl>
-									<FormDescription>Creator name</FormDescription>
+									<FormDescription>Project name</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -203,14 +203,14 @@ function CreatorForm() {
 							name="description"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Enter creator description</FormLabel>
+									<FormLabel>Enter project description</FormLabel>
 									<FormControl>
 										<Textarea
 											placeholder="Describe the type of content you produce and why visitors should support you"
 											{...field}
 										/>
 									</FormControl>
-									<FormDescription>Creator description</FormDescription>
+									<FormDescription>Project description</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -227,7 +227,7 @@ function CreatorForm() {
 										<Textarea rows={5} placeholder="Enter video urls" {...field} />
 									</FormControl>
 									<FormDescription>
-										Enter video urls to feature. These will be displayed on your creator page
+										Enter video urls to feature. These will be displayed on your project page
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
@@ -305,7 +305,7 @@ function CreatorForm() {
 										window.open(result.url);
 									}}
 								>
-									View creator page
+									View project page
 								</Button>
 							)}
 						</div>
@@ -317,4 +317,4 @@ function CreatorForm() {
 	);
 }
 
-export default CreatorForm;
+export default ProjectForm;

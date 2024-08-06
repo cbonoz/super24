@@ -4,6 +4,9 @@ import { Metadata } from "next";
 import { CheckIcon } from "@radix-ui/react-icons";
 
 export default function Home() {
+	// TODO: implement
+	return null;
+
 	return (
 		<main className="p-24 max-w-[1000px] centered content-center m-auto">
 			<div className="columns-1 gap-4 md:columns-2">
