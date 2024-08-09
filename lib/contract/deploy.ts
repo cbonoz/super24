@@ -1,12 +1,12 @@
-import { FUND_CONTRACT } from "./metadata";
+import { APP_CONTRACT } from "./metadata";
 import { formatDate } from "../utils";
 import { ethers } from "ethers";
 
 export async function deployContract(signer: any, network: string) {
 	// Deploy contract with ethers
 	const factory = new ethers.ContractFactory(
-		FUND_CONTRACT.abi,
-		FUND_CONTRACT.bytecode,
+		APP_CONTRACT.abi,
+		APP_CONTRACT.bytecode,
 		signer,
 	);
 

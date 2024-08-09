@@ -37,7 +37,7 @@ import { Address, Chain, createPublicClient, http } from "viem";
 import { getMetadataForHandle, registerHandle } from "@/lib/contract/interact";
 import { config } from "@/app/config";
 import { useEthersSigner } from "@/lib/get-signer";
-import { FUND_CONTRACT } from "@/lib/contract/metadata";
+import { APP_CONTRACT } from "@/lib/contract/metadata";
 import { siteConfig } from "@/util/site-config";
 
 const formSchema = z.object({
@@ -63,7 +63,7 @@ function ProjectForm() {
 	const signer = useEthersSigner({ chainId });
 
 	const setDemoData = async () => {
-		form.setValue("title", "CB Video productions");
+		form.setValue("title", "CB Video Productions");
 		form.setValue("handle", "cb-videos");
 		form.setValue("description", getPlaceholderDescription());
 		form.setValue(
@@ -84,7 +84,7 @@ function ProjectForm() {
 		defaultValues: {},
 	});
 
-	// 2. Define a submit handler.
+	// Define a submit handler.
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const { handle, title, description, videoUrls } = values;
 		console.log("values", values);
@@ -93,15 +93,15 @@ function ProjectForm() {
 		setError(null);
 
 		try {
-			const metadata = await getMetadataForHandle(signer, handle, true);
-			console.log("metadata", metadata);
-			if (metadata.isValue) {
+			const project = await getMetadataForHandle(signer, handle, true);
+			console.log("project", project);
+			if (project.exists) {
 				throw new Error("Handle already exists");
 			}
 		} catch (err: any) {
 			// Error expected
 			setError(getReadableError(err));
-			console.error("error checking metadata", err);
+			console.error("error checking project details", err);
 			setLoading(false);
 			return;
 		}
@@ -109,7 +109,7 @@ function ProjectForm() {
 		try {
 			const res: any = {};
 
-			// upload contract
+			// create project
 
 			const registerResult = await registerHandle(
 				signer,
@@ -119,18 +119,11 @@ function ProjectForm() {
 				videoUrls || "",
 			);
 
-			//   const registerResult = await writeContractAsync({
-			//     abi: FUND_CONTRACT.abi,
-			//     address: siteConfig.masterAddress as Address,
-			//     functionName: 'registerHandle',
-			//     args: [handle, title, description || '', videoUrls || ''],
-			// })
-
 			const registerTx = registerResult.tx.hash;
 			console.log("registerResult", registerTx);
 			res["txUrl"] = getExplorerUrl(registerTx, currentChain, true);
 			res["message"] =
-				"Page created successfully. Include the url below in your social media profiles.";
+				"Project created successfully. Include the url below in your social media profiles.";
 			res["url"] = dcrowdUrl(handle);
 			setResult(res);
 			// scroll to result
@@ -197,7 +190,7 @@ function ProjectForm() {
 							)}
 						/>
 
-						{/* Notes */}
+						{/* Description */}
 						<FormField
 							control={form.control}
 							name="description"
@@ -236,7 +229,7 @@ function ProjectForm() {
 
 						<Button disabled={loading || !address} type="submit">
 							{loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-							{!address ? "Connect wallet to continue" : "Create page"}
+							{!address ? "Connect wallet to continue" : "Create project"}
 						</Button>
 
 						{loading && (
@@ -249,12 +242,6 @@ function ProjectForm() {
 			)}
 			{hasResult && (
 				<div className="pt-8">
-					{/* <Button onClick={() => setResult(null)} variant="link">
-            {" "}
-            ← Create another request
-          </Button> */}
-
-					{/* center align */}
 					<div className="flex flex-col items-center  mt-8 ">
 						<svg
 							width="128"
@@ -272,7 +259,7 @@ function ProjectForm() {
 								clipRule="evenodd"
 							></path>
 						</svg>
-						<div className="text-xl mb-4">Page created successfully</div>
+						<div className="text-xl mb-4">Project created successfully</div>
 						<div className="flex flex-col items-center">
 							<div className="text-gray-500 text-sm my-2">
 								Post or share the below url on your existing social channels

@@ -64,7 +64,7 @@ Dcrowd is an open source project built on NextJS. Build and deploy an instance o
 
 2. Install dependencies via yarn in the root folder. Run `npx hardhat compile` from `/projectcontract`.
 
-3. Copy contents (includes ABI) to `metadata.tsx#FUND_CONTRACT`.
+3. Copy contents (includes ABI) to `metadata.tsx#APP_CONTRACT`.
 
 ### How to run/deploy
 

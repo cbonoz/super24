@@ -4,7 +4,7 @@ import { config } from "@/app/config";
 import BasicCard from "@/components/basic-card";
 import RenderObject from "@/components/render-object";
 import { Button } from "@/components/ui/button";
-import { FUND_CONTRACT } from "@/lib/contract/metadata";
+import { APP_CONTRACT } from "@/lib/contract/metadata";
 import { useEthersSigner } from "@/lib/get-signer";
 import { ContractMetadata, VideoRequest } from "@/lib/types";
 import { siteConfig } from "@/util/site-config";
@@ -79,7 +79,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 		isPending: loading,
 		error: readError,
 	} = useReadContract({
-		abi: FUND_CONTRACT.abi,
+		abi: APP_CONTRACT.abi,
 		address: siteConfig.masterAddress as Address,
 		functionName: "getMetadataUnchecked",
 		args: [handle],

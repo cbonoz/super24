@@ -1,4 +1,4 @@
-import { FUND_CONTRACT } from "./metadata";
+import { APP_CONTRACT } from "./metadata";
 import { ethToWei, formatDate, weiToEth } from "../utils";
 import { ethers } from "ethers";
 import { ContractMetadata, VideoRequest } from "../types";
@@ -17,6 +17,7 @@ export const processMetadata = (result: any[], allowInvalid?: boolean): Contract
 		active: result[6],
 		createdAt,
 		isValue: result[8],
+		exists: true
 	};
 
 	if (metadata.isValue === false && !allowInvalid) {
@@ -55,6 +56,7 @@ export const processMetadataObject = (
 		active: result.active,
 		createdAt: numberToDate(result.createdAt),
 		isValue: result.isValue,
+		exists: result.exists,
 	};
 
 	return metadata;
@@ -67,7 +69,7 @@ export const getMetadataForHandle = async (
 ): Promise<ContractMetadata> => {
 	const address = siteConfig.masterAddress;
 	console.log("getMetadataForHandle", handle, address);
-	const contract = new ethers.Contract(address, FUND_CONTRACT.abi, signer);
+	const contract = new ethers.Contract(address, APP_CONTRACT.abi, signer);
 	// call  with args
 	const result = await contract.getMetadataUnchecked(handle);
 	console.log("result", result);
@@ -81,7 +83,7 @@ export const registerHandle = async (
 	description: string,
 	videoUrls: string,
 ): Promise<any> => {
-	const contract = new ethers.Contract(siteConfig.masterAddress, FUND_CONTRACT.abi, signer);
+	const contract = new ethers.Contract(siteConfig.masterAddress, APP_CONTRACT.abi, signer);
 	const tx = await contract.registerHandle(handle, name, description, videoUrls);
 
 	// await
@@ -96,7 +98,7 @@ export const requestVideo = async (
 	message: string,
 	donation: number,
 ): Promise<any> => {
-	const contract = new ethers.Contract(siteConfig.masterAddress, FUND_CONTRACT.abi, signer);
+	const contract = new ethers.Contract(siteConfig.masterAddress, APP_CONTRACT.abi, signer);
 	const body = { value: ethToWei(donation), gasLimit: "1000000" };
 	console.log("makeRequest", body);
 	const tx = await contract.makeRequest(handle, message, body);

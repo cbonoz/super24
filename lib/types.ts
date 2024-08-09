@@ -30,6 +30,7 @@ export interface ContractMetadata {
     initialVideoUrls: any
     projectAddress: string
     requests: VideoRequest[]
+    exists: boolean
     active: boolean
     createdAt: string
     isValue: boolean
