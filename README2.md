@@ -54,9 +54,7 @@ Throughout the development process, we gained a deep understanding of multichain
 
 
 
-
-
-Optimism: Multichain - submit to multiple optimism L2 chains.
+<!-- Optimism: Multichain - submit to multiple optimism L2 chains.
 Base: Payments/social (evm compatible)
   https://docs.base.org/tutorials/deploy-with-foundry/
 Celo: best apps for minpay (africa or third world country funding use cases)
@@ -109,3 +107,15 @@ Dcrowd
 * Vouch for your friends
 * Get your idea funded
 * Kickbacks for supporting
+
+
+
+No doing:
+Superform
+Thirdweb
+Chainlink
+
+ -->
+
+
+

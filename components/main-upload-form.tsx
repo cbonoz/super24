@@ -39,15 +39,13 @@ import { config } from "@/app/config";
 import { useEthersSigner } from "@/lib/get-signer";
 import { APP_CONTRACT } from "@/lib/contract/metadata";
 import { siteConfig } from "@/util/site-config";
+import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit';
 
 const formSchema = z.object({
-	handle: z.string().min(3, {
-		message: "Project page handle must be at least 3 characters",
-	}),
 	title: z.string().min(3, {
 		message: "Project name must be at least 3 characters.",
 	}),
-	videoUrls: z.string().optional(),
+	videoUrl: z.string().optional(),
 	description: z.string(),
 });
 
@@ -64,19 +62,17 @@ function ProjectForm() {
 
 	const setDemoData = async () => {
 		form.setValue("title", "CB Video Productions");
-		form.setValue("handle", "cb-videos");
 		form.setValue("description", getPlaceholderDescription());
 		form.setValue(
-			"videoUrls",
+			"videoUrl",
 			"https://www.youtube.com/watch?v=6ZfuNTqbHE8,https://www.youtube.com/watch?v=TcMBFSGVi1c",
 		);
 	};
 
 	const clearForm = () => {
 		form.setValue("title", "");
-		form.setValue("handle", "");
 		form.setValue("description", "");
-		form.setValue("videoUrls", "");
+		form.setValue("videoUrl", "");
 	};
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -137,6 +133,14 @@ function ProjectForm() {
 		}
 	}
 
+	async function handleVerify(proof: any) {
+		console.log("proof", proof);
+	}
+
+	const onSuccess = async (result: any) => {
+		console.log("onSuccess", result);
+	}
+
 	const hasResult = !isEmpty(result);
 	const currency = currentChain?.nativeCurrency?.symbol || "ETH";
 
@@ -153,23 +157,6 @@ function ProjectForm() {
 					</a>
 
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-						<FormField
-							control={form.control}
-							name="handle"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Enter desired project page handle</FormLabel>
-									<FormControl>
-										<Input placeholder={`Project page handle`} {...field} />
-									</FormControl>
-									<FormDescription>
-										The handle defines the unique url of the page. The handle should be lower case
-										and contain no special characters or spaces - only hyphens
-									</FormDescription>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
 
 						{/* Name */}
 						<FormField
@@ -212,20 +199,35 @@ function ProjectForm() {
 						{/* Videos */}
 						<FormField
 							control={form.control}
-							name="videoUrls"
+							name="videoUrl"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Enter featured video urls separated by comma.</FormLabel>
+									<FormLabel>Enter featured video url</FormLabel>
 									<FormControl>
-										<Textarea rows={5} placeholder="Enter video urls" {...field} />
+										<Textarea rows={3} placeholder="Enter video url" {...field} />
 									</FormControl>
 									<FormDescription>
-										Enter video urls to feature. These will be displayed on your project page
+										Enter video url for your project (if any, ex: youtube link).
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
+
+<IDKitWidget
+	app_id={process.env.NEXT_PUBLIC_WORLDCOIN_APP_ID as any} // obtained from the Developer Portal
+	action="create-fundraiser" // obtained from the Developer Portal
+	onSuccess={onSuccess} // callback when the modal is closed
+	handleVerify={handleVerify} // callback when the proof is received
+	verification_level={VerificationLevel.Device}
+>
+	{({ open }) =>
+        // This is the button that will open the IDKit modal
+        <button onClick={open}>Verify with World ID</button>
+    }
+</IDKitWidget>
+
+
 
 						<Button disabled={loading || !address} type="submit">
 							{loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}

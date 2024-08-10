@@ -72,7 +72,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 
 	const router = useRouter();
 
-	const { pageId: handle } = params;
+	const { pageId: contractAddress } = params;
 
 	const {
 		data: readData,
@@ -80,21 +80,17 @@ export default function Dcrowd({ params }: { params: Params }) {
 		error: readError,
 	} = useReadContract({
 		abi: APP_CONTRACT.abi,
-		address: siteConfig.masterAddress as Address,
-		functionName: "getMetadataUnchecked",
-		args: [handle],
+		address: contractAddress as any,
+		functionName: "getMetadata",
 	});
 
-	const data: ContractMetadata | undefined =
-		handle !== "demo"
-			? processMetadataObject(readData as any)
-			: (DEMO_METADATA as ContractMetadata);
+	const data = processMetadataObject(readData || DEMO_METADATA as ContractMetadata);
 
 	const chainId = useChainId();
 	const currentChain: Chain | undefined = (chains || []).find((c) => c.id === chainId);
 
 	const signer = useEthersSigner({ chainId });
-	const isOwner = data?.projectAddress === address;
+	const isOwner = data?.creator === address;
 
 	// Log data on change
 	useEffect(() => {
@@ -118,17 +114,17 @@ export default function Dcrowd({ params }: { params: Params }) {
 	const invalid = !loading && !data;
 
 	const getTitle = () => {
-		if (data?.projectName) {
-			return data?.projectName || "Project page";
+		if (data?.title) {
+			return data?.title || "Project page";
 		} else if (error || invalid) {
 			return "Error accessing page";
 		}
 		return "Project page";
 	};
 
-	const hasProject = !isEmpty(data?.projectName);
+	const hasProject = !isEmpty(data?.title);
 	const currency = currentChain?.nativeCurrency?.symbol || "ETH";
-	const hasRequests = !isEmpty(data?.requests);
+	const hasdonations = !isEmpty(data?.donations);
 	const handleNotClaimed = !hasProject && !loading;
 
 	if (handleNotClaimed) {
@@ -137,7 +133,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 				<div>This handle has not been claimed by a project yet!</div>
 				<div>
 					Click&nbsp;
-					<a href="/upload" className="hover:underline text-blue-500">
+					<a href="/create-page" className="hover:underline text-blue-500">
 						here
 					</a>
 					&nbsp;to claim it!
@@ -203,7 +199,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 											<AccordionContent>
 												<div className="p-2">
 													<div className="italic">
-														Video requests will be received by the project via a smart contract
+														Video donations will be received by the project via a smart contract
 														transaction.
 													</div>
 

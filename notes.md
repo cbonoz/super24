@@ -28,7 +28,7 @@ Project page: https://dcrowdbeta.vercel.app/project/cb-videos
 
 Project page demo (no wallet connection required): https://dcrowdbeta.vercel.app/project/demo
 
-Make your own page: https://dcrowdbeta.vercel.app/upload
+Make your own page: https://dcrowdbeta.vercel.app/create-page
 
 ### How it works
 

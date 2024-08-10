@@ -28,7 +28,7 @@ const NavHeader = () => {
 			</div>
 			{!isDcrowd && (
 				<nav className="flex">
-					<a href="/upload" className="text-gray-500 hover:underline mx-4">
+					<a href="/create-page" className="text-gray-500 hover:underline mx-4">
 						Create project page
 					</a>
 					|

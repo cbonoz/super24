@@ -1,37 +1,34 @@
-export interface DcrowdData {
-    handle: string
+export interface ContractRequest {
     name: string
     description: string
+    videoUrl?: string
 }
 
-export interface VideoRequest {
+export interface Donation {
     handle: string;
     donation: string;
     message: string;
-    requester?: string;
+    donor?: string;
     createdAt?: any;
 }
 
-    // struct Metadata {
-    //     string handle;
-    //     string projectName;
-    //     string projectDescription;
-    //     string initialVideoUrls;
-    //     address projectAddress;
-    //     VideoRequest[] requests;
-    //     bool active;
-    //     uint createdAt;
-    //     bool isValue;
-    // }
+// struct Project {
+//     string title;
+//     string description;
+//     string videoUrl;
+//     bool active;
+//     uint256 donationCount;
+//     address creator;
+//     Donation[] donations;
+// }
 export interface ContractMetadata {
-    handle: string
-    projectName: string
-    projectDescription: string
-    initialVideoUrls: any
-    projectAddress: string
-    requests: VideoRequest[]
-    exists: boolean
+    title: string
+    description: string
+    videoUrl: string
+    donationCount: number
+    donations: Donation[]
     active: boolean
+    creator: string
     createdAt: string
     isValue: boolean
 }

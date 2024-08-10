@@ -16,56 +16,32 @@ contract CrowdContract {
     }
 
     struct Project {
-        string name;
+        string title;
         string description;
-        string initialMediaUrls;
-        address creatorAddress;
-        Donation[] donations;
+        string videoUrl;
         bool active;
-        uint createdAt;
-        bool exists;
         uint256 donationCount;
-        Donation lastDonation;
+        address creator;
+        Donation[] donations;
     }
 
     address private owner;
     string public network;
+    // project
+    Project public project;
+    // last price
+    PythStructs.Price public lastPrice;
 
-    mapping(string => Project) private projectMap;
-    mapping(string => Donation[]) private projectToDonationMap;
-    mapping(string => Donation) private projectToLastDonation;
+    event DonationReceived(address donor, string projecttitle, string message, uint amount);
 
-    event ProjectCreated(string name);
-    event DonationReceived(address donor, string projectName, string message, uint amount);
-
-    constructor(string memory _network, address _pythAddress) {
+    constructor(string memory _title, string memory _description, string memory _videoUrl, string memory _network, address _pythAddress) {
         owner = msg.sender;
         network = _network;
         pyth = IPyth(_pythAddress);
+        project = Project(_title, _description, _videoUrl, true, 0, owner, new Donation[](0));
     }
 
-    function createProject(string memory _name,
-        string memory _description,
-        string memory _initialMediaUrls
-    ) public returns (Project memory) {
-        Project storage project = projectMap[_name];
-        require(!project.exists, "A project with this name already exists");
-
-        project.name = _name;
-        project.description = _description;
-        project.initialMediaUrls = _initialMediaUrls;
-        project.creatorAddress = msg.sender;
-        project.active = true;
-        project.createdAt = block.timestamp;
-        project.exists = true;
-
-        projectMap[_name] = project;
-
-        emit ProjectCreated(_name);
-        return projectMap[_name];
-    }
-
-    function getLatestOnChainPrice(bytes[] calldata priceUpdate) public returns (string memory) {
+    function getLatestOnChainPrice(bytes[] calldata priceUpdate) public returns (PythStructs.Price memory) {
         uint fee = pyth.getUpdateFee(priceUpdate);
         pyth.updatePriceFeeds{ value: fee }(priceUpdate);
 
@@ -74,45 +50,50 @@ contract CrowdContract {
         // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
         bytes32 priceFeedId = 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace; // ETH/USD
         PythStructs.Price memory price = pyth.getPrice(priceFeedId);
-
-        return price.price.toString();
+        // update price
+        lastPrice = price;
+        return price;
     }
 
-    function donateToProject(string memory _name, string memory _message) public payable {
-        Project storage project = projectMap[_name];
-        require(project.exists, "A project with this name does not exist");
-
+    function donateToProject(string memory _title, string memory _message) public payable {
+        if (project.active == false) {
+            // raise
+            revert("Project is not active");
+        }
         address donor = msg.sender;
         uint amount = msg.value;
 
-        require(msg.sender != project.creatorAddress, "Project creators cannot donate to their own project");
+        require(msg.sender != owner, "Project creators cannot donate to their own project");
 
         if (amount > 0) {
-            payable(project.creatorAddress).transfer(amount);
+            payable(owner).transfer(amount);
         }
 
-        emit DonationReceived(donor, _name, _message, amount);
+        emit DonationReceived(donor, _title, _message, amount);
 
-        Donation[] storage donations = projectToDonationMap[_name];
         Donation memory donation = Donation(donor, _message, amount, block.timestamp);
-        donations.push(donation);
-        projectToDonationMap[_name] = donations;
-        projectToLastDonation[_name] = donation;
+        project.donationCount += 1;
+        project.donations.push(donation);
     }
 
-    function getProjectDetails(string memory _name) public view returns (Project memory) {
-        require(projectMap[_name].exists, "Project does not exist");
-        return getProjectDetailsUnchecked(_name);
-    }
-
-    function getProjectDetailsUnchecked(string memory _name) public view returns (Project memory) {
-        Project memory project = projectMap[_name];
-        project.donations = projectToDonationMap[_name];
-        project.lastDonation = projectToLastDonation[_name];
+    function getProjectDetails() public view returns (Project memory) {
         return project;
     }
 
     function getContractOwner() public view returns (address) {
         return owner;
+    }
+
+    function getNetwork() public view returns (string memory) {
+        return network;
+    }
+
+    function getProjectDonations() public view returns (Donation[] memory) {
+        return project.donations;
+    }
+
+    function setActive(bool _active) public {
+        require(msg.sender == owner, "Only the owner can change the project status");
+        project.active = _active;
     }
 }

@@ -4,6 +4,6 @@ build
 .DS_Store
 dcrowdcontract
 data
-img
 yarn.lock
+.env
 package-lock.json

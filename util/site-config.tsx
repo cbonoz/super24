@@ -5,7 +5,7 @@ export const siteConfig = {
 	title: "Dcrowd",
 	description: "A decentralized crowdfunding platform connecting projects with supporters through blockchain technology",
 	isLocal: process.env.NEXT_PUBLIC_ENV === "development",
-	masterAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as string,
+	schemaId: process.env.NEXT_PUBLIC_SCHEMA_ID as string,
 	admin: {
 		information:
 			"The admin page contains information for managing project and supporter interactions.",

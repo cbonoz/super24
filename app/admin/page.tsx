@@ -13,7 +13,7 @@ import { Chain } from "viem";
 import { useChainId, useChains } from "wagmi";
 
 const AdminPage = () => {
-	const [contract, setContract] = useState<any>();
+	const [result, setResult] = useState<any>();
 	const [error, setError] = useState<any>(null);
 	const [loading, setLoading] = useState(false);
 
@@ -23,17 +23,17 @@ const AdminPage = () => {
 
 	const signer = useEthersSigner({ chainId });
 
-	async function deployMasterContract() {
+	async function createSchema() {
 		setLoading(true);
 		setError(null);
 
 		try {
-			// Deploy master contract
-			const res = await deployContract(signer, currentChain?.name || "ethereum");
-			console.log("Master contract deployed:", res);
-			setContract(res);
+			// Deploy schema
+			const res = await createSchema(signer, currentChain?.name || "ethereum");
+			console.log("schema deployed:", res);
+			setResult(res);
 		} catch (err) {
-			console.error("Error deploying master contract:", err);
+			console.error("Error deploying schema:", err);
 			setError(getReadableError(err));
 		} finally {
 			setLoading(false);
@@ -42,21 +42,21 @@ const AdminPage = () => {
 
 	return (
 		<div className="flex flex-row items-center justify-center mt-8">
-			<BasicCard title={`Deploy ${siteConfig.title} master contract`}>
-				{siteConfig.masterAddress && <p>Master contract address: {siteConfig.masterAddress}</p>}
-				{!siteConfig.masterAddress && <p>Master contract address not set</p>}
+			<BasicCard title={`Deploy ${siteConfig.title} schema`}>
+				{siteConfig.schemaId && <p>schema id: {siteConfig.schemaId}</p>}
+				{!siteConfig.schemaId && <p>schema id not set</p>}
 
 				<div className="text-md my-4">
-					Deploy a new master contract instance to the {currentChain?.name || ""} blockchain.
+					Deploy a new schema instance to the {currentChain?.name || ""} blockchain.
 				</div>
 
-				<Button onClick={deployMasterContract} disabled={loading}>
+				<Button onClick={createSchema} disabled={loading}>
 					{loading && (
 						<span className="animate-spin">
 							<ReloadIcon />
 						</span>
 					)}
-					&nbsp; Deploy master contract
+					&nbsp; Deploy schema
 				</Button>
 
 				{loading && (
@@ -67,20 +67,12 @@ const AdminPage = () => {
 
 				{error && <div className="text-red-500">{error}</div>}
 
-				{contract?.address && (
+				{result && (
 					<div className="mt-4">
-						<div className=" text-green-500">Master contract deployed at: {contract?.address}</div>
-						<a
-							href={getExplorerUrl(contract?.address, currentChain)}
-							target="_blank"
-							rel="noreferrer"
-							className="text-blue-500 mt-4 block text-sm hover:underline"
-						>
-							View contract on {currentChain?.name} explorer
-						</a>
-					</div>
-				)}
-			</BasicCard>
+						<RenderObject title="Result" obj={result} />
+				</div>)}
+
+							</BasicCard>
 		</div>
 	);
 };

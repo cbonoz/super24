@@ -2,15 +2,15 @@ import { RouteButtons } from "@/components/route-buttons";
 import { siteConfig } from "@/util/site-config";
 import { Metadata } from "next";
 import { CheckIcon } from "@radix-ui/react-icons";
+import Image from 'next/image';
+
 
 export default function Home() {
-	// TODO: implement
-	return null;
-
 	return (
-		<main className="p-24 max-w-[1000px] centered content-center m-auto">
-			<div className="columns-1 gap-4 md:columns-2">
-				<div>
+		<div className={`bg-auto	h-screen bg-[url('https://res.cloudinary.com/dgnvposhn/images/f_auto,q_auto/v1711121344/wordpress_assets/Proposed-Pipeline-and-Interstate-Bypass-would-cut-directly-through-this-section-of-the-Cedar-Grove-Wildlife-Corridor-scaled-5/Proposed-Pipeline-and-Interstate-Bypass-would-cut-directly-through-this-section-of-the-Cedar-Grove-Wildlife-Corridor-scaled-5.jpg?_i=AA')]`}>
+			<main className=" p-24 max-w-[1000px] centered content-center m-auto">
+				<div className='bg-white p-16 bg-opacity-80 rounded-xl'>
+					<Image src="/logo.png" alt="dcrowd" className="mt-6" width={400} height={200} />
 					<div className="text-xl font-bold pt-8">{siteConfig.description}.</div>
 
 					{siteConfig.valueSentences.map((sentence, index) => (
@@ -37,12 +37,7 @@ export default function Home() {
 					))}
 					<RouteButtons className="space-x-4 mt-6" />
 				</div>
-				<div>
-					<br />
-					<br />
-					<img src="/logo_3_2.png" alt="dcrowd" className="mt-6" />
-				</div>
-			</div>
 		</main>
+		</div>
 	);
 }
