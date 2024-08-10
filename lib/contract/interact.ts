@@ -1,29 +1,47 @@
 import { APP_CONTRACT } from "./metadata";
 import { ethToWei, formatDate, weiToEth } from "../utils";
 import { ethers } from "ethers";
-import { ContractMetadata, VideoRequest } from "../types";
+import { ContractMetadata } from "../types";
 import { siteConfig } from "@/util/site-config";
+import { title } from 'process';
 
+// struct Project {
+// 	string title;
+// 	string description;
+// 	string videoUrl;
+// 	string verificationHash;
+// 	string network;
+// 	bool active;
+// 	uint256 donationCount;
+// 	address creator;
+// }
 export const processMetadata = (result: any[], allowInvalid?: boolean): ContractMetadata => {
-	const initialVideoUrls = result[3].split(",").map((url: string) => url.trim());
-	const createdAt = formatDate(Number(result[7]) * 1000);
-	const metadata = {
-		handle: result[0],
-		projectName: result[1],
-		projectDescription: result[2],
-		initialVideoUrls,
-		projectAddress: result[4],
-		requests: result[5],
-		active: result[6],
-		createdAt,
-		isValue: result[8],
-		exists: true
-	};
-
-	if (metadata.isValue === false && !allowInvalid) {
-		throw new Error("Handle not found");
+	if (!result || !result.length) {
+		return {
+			title: "",
+			description: "",
+			videoUrl: "",
+			verificationHash	: "",
+			donationCount: 0,
+			donations: [],
+			active: false,
+			creator: "",
+			createdAt: "",
+			isValue: false,
+		};
 	}
-
+	const metadata = {
+		title: result[0],
+		description: result[1],
+		videoUrl: result[2],
+		donationCount: result[6],
+		donations: [],
+		verificationHash: result[3],
+		active: result[5],
+		creator: result[7],
+		createdAt: result[8],
+		isValue: true,
+	};
 	return metadata;
 };
 
@@ -37,75 +55,52 @@ export const processMetadataObject = (
 	if (!result) {
 		return result;
 	}
-	const initialVideoUrls = (result.initialVideoUrls || "")
-		.split(",")
-		.map((url: string) => url.trim());
 	const metadata = {
-		handle: result.handle,
-		projectName: result.projectName,
-		projectDescription: result.projectDescription,
-		initialVideoUrls,
-		projectAddress: result.projectAddress,
-		requests: result.requests.filter((r: VideoRequest) => !!r.createdAt).map((r: VideoRequest) => {
+		title: result.title,
+		description: result.description,
+		videoUrl: result.videoUrl,
+		donationCount: result.donationCount,
+		donations: result.donations.map((d) => {
 			return {
-				...r,
-				donation: weiToEth(r.donation),
-				createdAt: numberToDate(r.createdAt),
+				...d,
+				donation: weiToEth(d.donation),
+				createdAt: numberToDate(d.createdAt),
 			};
 		}),
 		active: result.active,
+		verificationHash: result.verificationHash,
+		creator: result.creator,
 		createdAt: numberToDate(result.createdAt),
 		isValue: result.isValue,
-		exists: result.exists,
-	};
-
+	}
 	return metadata;
 };
 
-export const getMetadataForHandle = async (
+export const getMetadata = async (
 	signer: any,
-	handle: string,
-	allowInvalid?: boolean,
+	address: string,
 ): Promise<ContractMetadata> => {
-	const address = siteConfig.masterAddress;
-	console.log("getMetadataForHandle", handle, address);
+	console.log("getMetadataForHandle", address);
 	const contract = new ethers.Contract(address, APP_CONTRACT.abi, signer);
 	// call  with args
-	const result = await contract.getMetadataUnchecked(handle);
+	const result = await contract.getMetadata();
 	console.log("result", result);
-	return processMetadata(result, allowInvalid);
+	return processMetadata(result);
 };
 
-export const registerHandle = async (
+export const sendToProject = async (
 	signer: any,
-	handle: string,
-	name: string,
-	description: string,
-	videoUrls: string,
-): Promise<any> => {
-	const contract = new ethers.Contract(siteConfig.masterAddress, APP_CONTRACT.abi, signer);
-	const tx = await contract.registerHandle(handle, name, description, videoUrls);
-
-	// await
-	const result = await tx.wait();
-	console.log("result", result);
-	return { result, tx };
-};
-
-export const requestVideo = async (
-	signer: any,
-	handle: string,
+	address: string,
 	message: string,
 	donation: number,
 ): Promise<any> => {
-	const contract = new ethers.Contract(siteConfig.masterAddress, APP_CONTRACT.abi, signer);
+	const contract = new ethers.Contract(address, APP_CONTRACT.abi, signer);
 	const body = { value: ethToWei(donation), gasLimit: "1000000" };
-	console.log("makeRequest", body);
-	const tx = await contract.makeRequest(handle, message, body);
+	console.log("sendToProject", body);
+	const tx = await contract.sendToProject(message);
 
 	// await
 	const result = await tx.wait();
 	console.log("result", result);
-
 	return result;
 };

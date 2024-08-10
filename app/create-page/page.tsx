@@ -1,6 +1,7 @@
 import BasicCard from '@/components/basic-card'
 import ProjectForm from '@/components/main-upload-form'
 import { siteConfig } from '@/util/site-config'
+import Image from 'next/image'
 
 const Upload = () => {
     return (
@@ -23,8 +24,14 @@ const Upload = () => {
                 </BasicCard>}
             <BasicCard
                 className="w-[600px] p-4 justify-center"
-                title="Create new project page"
-                description="Create a new project page. This item will become publicly available for other users to discover."
+                title={
+                    <div>
+                        <Image
+                         src="/logo.png" alt="dcrowd" className="mb-6" width={120} height={80} />
+                        <h1 className="text-2xl font-bold">Create new project fundraiser</h1>
+                    </div>
+                }
+                description="Create a new project fundraiser. This item will become publicly available for other users to discover."
             >
                 <ProjectForm />
 

@@ -24,16 +24,7 @@ export const siteConfig = {
 		{
 			title: "How does it work?",
 			description:
-				"Projects can create a project page with their ideas and goals. Supporters can browse projects and fund the ones they believe in. Smart contracts ensure that funds are released only when predefined milestones are met, promoting accountability and trust.",
-		},
-		{
-			title: `Where is the Dcrowd contract deployed?`,
-			description: (
-				<span>
-					The Dcrowd contract is deployed at address:&nbsp;
-					{process.env.NEXT_PUBLIC_CONTRACT_ADDRESS}
-				</span>
-			),
+				"Projects can create a project fundraiser with their ideas and goals. Supporters can browse projects and fund the ones they believe in. Smart contracts ensure that funds are released only when predefined milestones are met, promoting accountability and trust.",
 		},
 		{
 			title: "Disclaimer",

@@ -6,8 +6,7 @@ import RenderObject from "@/components/render-object";
 import { Button } from "@/components/ui/button";
 import { APP_CONTRACT } from "@/lib/contract/metadata";
 import { useEthersSigner } from "@/lib/get-signer";
-import { ContractMetadata, VideoRequest } from "@/lib/types";
-import { siteConfig } from "@/util/site-config";
+import { ContractMetadata, } from "@/lib/types";
 import ReactPlayer from "react-player";
 import {
 	Carousel,
@@ -46,12 +45,11 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { processMetadataObject, requestVideo } from "@/lib/contract/interact";
+import { processMetadataObject, } from "@/lib/contract/interact";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@radix-ui/react-select";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import VideoDropzone from "@/components/video-dropzone";
 
 interface Params {
 	pageId: string;
@@ -84,7 +82,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 		functionName: "getMetadata",
 	});
 
-	const data = processMetadataObject(readData || DEMO_METADATA as ContractMetadata);
+	const data = processMetadataObject(readData as any || DEMO_METADATA as ContractMetadata);
 
 	const chainId = useChainId();
 	const currentChain: Chain | undefined = (chains || []).find((c) => c.id === chainId);
@@ -103,7 +101,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 		return <div className="flex flex-col items-center justify-center mt-8">Loading...</div>;
 	}
 
-	if (!address && handle !== "demo") {
+	if (!address) {
 		return (
 			<div className="flex flex-col items-center justify-center mt-8">
 				Please connect your wallet to view project pages.
@@ -145,23 +143,8 @@ export default function Dcrowd({ params }: { params: Params }) {
 	return (
 		// black background
 		<div className="bg-black px-20">
-			<Carousel
-				opts={{
-					align: "center",
-					loop: true,
-				}}
-				className={`w-full mx-auto`}
-			>
-				<CarouselContent className="w-full">
-					{(data?.initialVideoUrls || []).map((url: string, index: number) => (
-						<CarouselItem key={index} className="w-full">
-							<ReactPlayer url={url} controls={true} height="800px" width="100%" />
-						</CarouselItem>
-					))}
-				</CarouselContent>
-				<CarouselPrevious />
-				<CarouselNext />
-			</Carousel>
+			{!!data?.videoUrl && <ReactPlayer url={data.videoUrl} controls={true} height="800px" width="100%" />}
+
 			<div className="flex flex-col items-center justify-center">
 				<BasicCard
 					title={""}
@@ -180,11 +163,11 @@ export default function Dcrowd({ params }: { params: Params }) {
 								<Link
 									target="_blank"
 									className="text-sm hover:underline text-blue-500"
-									href={getExplorerUrl(data?.projectAddress, currentChain)}
+									href={getExplorerUrl(data?.creator, currentChain)}
 								>
-									{data?.projectAddress}
+									{data?.creator}
 								</Link>
-								<div>Donations will go to this address. Only donate to trusted projects.</div>
+								<div>Payments will go to this address. Only donate to trusted projects.</div>
 
 							<hr className="my-4" />
 							<Separator />

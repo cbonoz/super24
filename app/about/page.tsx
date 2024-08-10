@@ -36,15 +36,6 @@ const About = () => {
 				))}
 
 				<br />
-
-				<Link
-					target="_blank"
-					className="text-blue-500 hover:underline"
-					href={getExplorerUrl(siteConfig.masterAddress, currentChain)}
-				>
-					View master contract on {currentChain?.name} explorer
-				</Link>
-
 				{/* <Button
                     onClick={getSchemaId}
                     disabled={loading}

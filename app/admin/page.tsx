@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { deployContract } from "@/lib/contract/deploy";
 import { useEthersSigner } from "@/lib/get-signer";
 import { getExplorerUrl, getReadableError, isEmpty } from "@/lib/utils";
+import { registerSchema } from '@/util/attest';
 import { siteConfig } from "@/util/site-config";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
@@ -29,7 +30,7 @@ const AdminPage = () => {
 
 		try {
 			// Deploy schema
-			const res = await createSchema(signer, currentChain?.name || "ethereum");
+			const res = await registerSchema(signer, chainId);
 			console.log("schema deployed:", res);
 			setResult(res);
 		} catch (err) {

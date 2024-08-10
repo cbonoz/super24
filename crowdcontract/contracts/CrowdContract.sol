@@ -19,26 +19,43 @@ contract CrowdContract {
         string title;
         string description;
         string videoUrl;
+        string verificationHash;
+        string network;
         bool active;
         uint256 donationCount;
         address creator;
-        Donation[] donations;
+        // created
+        uint256 createdAt;
     }
 
     address private owner;
-    string public network;
     // project
     Project public project;
+    Donation[] public donations;
     // last price
     PythStructs.Price public lastPrice;
 
-    event DonationReceived(address donor, string projecttitle, string message, uint amount);
+    event DonationReceived(address donor, string message, uint amount);
 
-    constructor(string memory _title, string memory _description, string memory _videoUrl, string memory _network, address _pythAddress) {
+    constructor(string memory _title,
+    string memory _description,
+    string memory _videoUrl,
+    string memory _verificationHash,
+    string memory _network,
+    address _pythAddress) {
         owner = msg.sender;
-        network = _network;
         pyth = IPyth(_pythAddress);
-        project = Project(_title, _description, _videoUrl, true, 0, owner, new Donation[](0));
+        project = Project(
+            _title,
+            _description,
+            _videoUrl,
+            _verificationHash,
+            _network,
+            true,
+            0,
+            msg.sender,
+            block.timestamp
+        );
     }
 
     function getLatestOnChainPrice(bytes[] calldata priceUpdate) public returns (PythStructs.Price memory) {
@@ -55,7 +72,7 @@ contract CrowdContract {
         return price;
     }
 
-    function donateToProject(string memory _title, string memory _message) public payable {
+    function sendToProject(string memory _message) public payable {
         if (project.active == false) {
             // raise
             revert("Project is not active");
@@ -69,14 +86,13 @@ contract CrowdContract {
             payable(owner).transfer(amount);
         }
 
-        emit DonationReceived(donor, _title, _message, amount);
-
-        Donation memory donation = Donation(donor, _message, amount, block.timestamp);
+        emit DonationReceived(donor, _message, amount);
         project.donationCount += 1;
-        project.donations.push(donation);
+        donations.push(Donation(donor, _message, amount, block.timestamp));
     }
 
-    function getProjectDetails() public view returns (Project memory) {
+    function getMetadata() public view returns (Project memory) {
+       // copy project and set donations
         return project;
     }
 
@@ -84,12 +100,8 @@ contract CrowdContract {
         return owner;
     }
 
-    function getNetwork() public view returns (string memory) {
-        return network;
-    }
-
-    function getProjectDonations() public view returns (Donation[] memory) {
-        return project.donations;
+    function getProjectDonations() public view returns (Donation[] memory ) {
+        return donations;
     }
 
     function setActive(bool _active) public {

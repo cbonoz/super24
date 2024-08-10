@@ -1,11 +1,12 @@
 export interface ContractRequest {
     name: string
     description: string
+    verificationHash: string
     videoUrl?: string
 }
 
 export interface Donation {
-    handle: string;
+    name: string;
     donation: string;
     message: string;
     donor?: string;
@@ -26,6 +27,7 @@ export interface ContractMetadata {
     description: string
     videoUrl: string
     donationCount: number
+    verificationHash: string;
     donations: Donation[]
     active: boolean
     creator: string

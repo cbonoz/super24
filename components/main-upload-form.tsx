@@ -34,19 +34,20 @@ import {
 	useWriteContract,
 } from "wagmi";
 import { Address, Chain, createPublicClient, http } from "viem";
-import { getMetadataForHandle, registerHandle } from "@/lib/contract/interact";
-import { config } from "@/app/config";
 import { useEthersSigner } from "@/lib/get-signer";
-import { APP_CONTRACT } from "@/lib/contract/metadata";
-import { siteConfig } from "@/util/site-config";
 import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit';
+import { DEMO_REQUEST } from '@/lib/constants';
+import { deployContract } from '@/lib/contract/deploy';
 
 const formSchema = z.object({
 	title: z.string().min(3, {
 		message: "Project name must be at least 3 characters.",
 	}),
+	description: z.string().min(10, {
+		message: "Project description must be at least 10 characters.",
+	}),
+	verificationHash: z.string(),
 	videoUrl: z.string().optional(),
-	description: z.string(),
 });
 
 function ProjectForm() {
@@ -61,18 +62,17 @@ function ProjectForm() {
 	const signer = useEthersSigner({ chainId });
 
 	const setDemoData = async () => {
-		form.setValue("title", "CB Video Productions");
-		form.setValue("description", getPlaceholderDescription());
-		form.setValue(
-			"videoUrl",
-			"https://www.youtube.com/watch?v=6ZfuNTqbHE8,https://www.youtube.com/watch?v=TcMBFSGVi1c",
-		);
+		form.setValue("title", DEMO_REQUEST.name)
+		form.setValue("description", DEMO_REQUEST.description)
+		form.setValue("videoUrl",DEMO_REQUEST.videoUrl);
+		form.setValue("verificationHash", "");
 	};
 
 	const clearForm = () => {
 		form.setValue("title", "");
 		form.setValue("description", "");
 		form.setValue("videoUrl", "");
+		form.setValue("verificationHash", "");
 	};
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -82,45 +82,31 @@ function ProjectForm() {
 
 	// Define a submit handler.
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const { handle, title, description, videoUrls } = values;
+		const { title, description, videoUrl, verificationHash } = values;
 		console.log("values", values);
 
 		setLoading(true);
 		setError(null);
 
 		try {
-			const project = await getMetadataForHandle(signer, handle, true);
-			console.log("project", project);
-			if (project.exists) {
-				throw new Error("Handle already exists");
-			}
-		} catch (err: any) {
-			// Error expected
-			setError(getReadableError(err));
-			console.error("error checking project details", err);
-			setLoading(false);
-			return;
-		}
-
-		try {
 			const res: any = {};
 
-			// create project
-
-			const registerResult = await registerHandle(
+			const contractResult = await deployContract(
 				signer,
-				handle,
 				title,
-				description || "",
-				videoUrls || "",
+				description,
+				videoUrl || "",
+				verificationHash,
+				currentChain?.name || "ethereum"
 			);
 
-			const registerTx = registerResult.tx.hash;
-			console.log("registerResult", registerTx);
-			res["txUrl"] = getExplorerUrl(registerTx, currentChain, true);
+			console.log("contractResult", contractResult);
+			const { address, transaction } = contractResult;
+			const contractTx = transaction.hash;
+			res["txUrl"] = getExplorerUrl(contractTx, currentChain, true);
 			res["message"] =
 				"Project created successfully. Include the url below in your social media profiles.";
-			res["url"] = dcrowdUrl(handle);
+			res["url"] = dcrowdUrl(address);
 			setResult(res);
 			// scroll to result
 			window.scrollTo(0, document.body.scrollHeight);
@@ -164,10 +150,10 @@ function ProjectForm() {
 							name="title"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Enter project name</FormLabel>
+									<FormLabel>Enter project title</FormLabel>
 									<FormControl>
 										<Input
-											placeholder={`Project page name that will be shown at the top of your page`}
+											placeholder={`Project or initiative title that will be shown at the top of your fundraiser page`}
 											{...field}
 										/>
 									</FormControl>
@@ -186,7 +172,7 @@ function ProjectForm() {
 									<FormLabel>Enter project description</FormLabel>
 									<FormControl>
 										<Textarea
-											placeholder="Describe the type of content you produce and why visitors should support you"
+											placeholder="Describe the mission of your fundraiser and why visitors should support it"
 											{...field}
 										/>
 									</FormControl>

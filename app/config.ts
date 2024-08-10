@@ -2,7 +2,7 @@ import { createConfig, http, cookieStorage, createStorage } from 'wagmi'
 import { mainnet, baseSepolia, sepolia } from 'wagmi/chains'
 
 export const config = createConfig({
-    chains: [baseSepolia, sepolia],
+    chains: [baseSepolia],
     ssr: true,
     storage: createStorage({
         storage: cookieStorage,
