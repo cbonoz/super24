@@ -2,8 +2,18 @@
 export const BASE_SEPOLIA_EAS_ADDRESS = '0x4200000000000000000000000000000000000021'
 export const BASE_SEPOLIA_SCHEMA_ADDRESS = '0x4200000000000000000000000000000000000020'
 
+import { Endorsement } from '@/lib/types';
 import { EAS, Offchain, SchemaEncoder, SchemaRegistry } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
+
+export const SCHEMA_MAP = {
+  baseSepolia: {
+    eas: BASE_SEPOLIA_EAS_ADDRESS,
+    schema: BASE_SEPOLIA_SCHEMA_ADDRESS
+  }
+}
+
+const ENDORSE_SCHEMA = 'address sender, address recipient, string message, uint256 timestamp';
 
 // https://ethglobal.com/events/superhack2024/prizes#eas
 
@@ -20,23 +30,77 @@ export const connectAttestation = async (provider: any) => {
   eas.connect(provider);
 }
 
+export const getSchema = async (provider: any, schemaId: string, chainId: number) => {
+const schemaRegistryContractAddress = SCHEMA_MAP.baseSepolia.schema;
+const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
+schemaRegistry.connect(provider);
+
+const schemaRecord: any = await schemaRegistry.getSchema({ uid: schemaId });
+const schemaJson = {
+  uid: schemaRecord[0],
+  address: schemaRecord[1],
+  revocable: schemaRecord[2],
+  schema: schemaRecord[3],
+}
+return schemaJson;
+}
+
 export const registerSchema = async (signer: any, chainId: number) => {
-const schemaAddress = BASE_SEPOLIA_SCHEMA_ADDRESS
+const schemaAddress = SCHEMA_MAP.baseSepolia.schema;
 const schemaRegistry = new SchemaRegistry(schemaAddress);
 
 schemaRegistry.connect(signer);
 
-const schema = 'address creatorAddress, address userAddress, string message, uint256 timestamp';
-const resolverAddress = '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0'; // Sepolia 0.26
+const resolverAddress = schemaAddress; // '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0'; // Sepolia 0.26
 const revocable = true;
 
 const transaction = await schemaRegistry.register({
-  schema,
+  schema: ENDORSE_SCHEMA,
   resolverAddress,
   revocable
 });
 
 // Optional: Wait for transaction to be validated
-const res = await transaction.wait();
-return {transaction, res};
+const schemaId = await transaction.wait();
+console.log('tx', transaction, schemaId);
+return {schemaId}
+}
+
+
+export const createAttestion = async (signer: any, data: Endorsement, chainId?: number) => {
+
+const schemaUID = process.env.NEXT_PUBLIC_SCHEMA_ID;
+if (!schemaUID) {
+  throw new Error('Schema ID not found');
+}
+
+  const attestAddress = SCHEMA_MAP.baseSepolia.eas;
+const eas = new EAS(attestAddress);
+eas.connect(signer);
+
+// Initialize SchemaEncoder with the schema string
+const schemaEncoder = new SchemaEncoder(ENDORSE_SCHEMA);
+const encodedData = schemaEncoder.encodeData([
+  { name: 'sender', value: data.sender, type: 'address' },
+  { name: 'recipient', value: data.recipient, type: 'address' },
+  { name: 'message', value: data.message, type: 'string' },
+  { name: 'timestamp', value: data.timestamp, type: 'uint256' }
+]);
+
+const transaction = await eas.attest({
+  schema: schemaUID,
+  data: {
+    recipient: data.recipient,
+    expirationTime: BigInt(0),
+    revocable: true, // Be aware that if your schema is not revocable, this MUST be false
+    data: encodedData
+  }
+});
+
+const attestationId = await transaction.wait();
+
+console.log('New attestation UID:', attestationId);
+
+console.log('Transaction receipt:', transaction.receipt);
+return {transaction, attestationId}
 }

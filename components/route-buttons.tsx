@@ -13,7 +13,7 @@ export const RouteButtons = ({className}: Props) => {
 		<div className={className}>
 			<Button
 			size={"lg"}
-				className="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+				className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
 				onClick={() => router.push("/create-page")}
 			>
 				Create project page
@@ -21,7 +21,7 @@ export const RouteButtons = ({className}: Props) => {
 
 			<Button
 			size={"lg"}
-				className="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+				className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
 				onClick={() => router.push("/project")}
 			>
 				Find project page

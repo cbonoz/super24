@@ -5,6 +5,13 @@ export interface ContractRequest {
     videoUrl?: string
 }
 
+export interface Endorsement {
+    sender: string // recipient
+    recipient: string // sender
+    message: string
+    timestamp: number
+}
+
 export interface Donation {
     name: string;
     donation: string;
@@ -24,6 +31,7 @@ export interface Donation {
 // }
 export interface ContractMetadata {
     title: string
+    ownerName?: string
     description: string
     videoUrl: string
     donationCount: number

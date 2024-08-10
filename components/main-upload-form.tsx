@@ -38,6 +38,8 @@ import { useEthersSigner } from "@/lib/get-signer";
 import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit';
 import { DEMO_REQUEST } from '@/lib/constants';
 import { deployContract } from '@/lib/contract/deploy';
+import { PYTH_CONTRACT_MAP } from '@/util/pyth';
+import { baseSepolia } from 'viem/chains';
 
 const formSchema = z.object({
 	title: z.string().min(3, {
@@ -91,19 +93,20 @@ function ProjectForm() {
 		try {
 			const res: any = {};
 
+			const pythAddress: string = PYTH_CONTRACT_MAP[currentChain?.id || baseSepolia.id];
 			const contractResult = await deployContract(
 				signer,
 				title,
 				description,
 				videoUrl || "",
 				verificationHash,
-				currentChain?.name || "ethereum"
+				currentChain?.name || "ethereum",
+				pythAddress
 			);
 
 			console.log("contractResult", contractResult);
-			const { address, transaction } = contractResult;
-			const contractTx = transaction.hash;
-			res["txUrl"] = getExplorerUrl(contractTx, currentChain, true);
+			const address = contractResult.target;
+			res["contractUrl"] = getExplorerUrl(address, currentChain, true);
 			res["message"] =
 				"Project created successfully. Include the url below in your social media profiles.";
 			res["url"] = dcrowdUrl(address);
@@ -193,7 +196,7 @@ function ProjectForm() {
 										<Textarea rows={3} placeholder="Enter video url" {...field} />
 									</FormControl>
 									<FormDescription>
-										Enter video url for your project (if any, ex: youtube link).
+										Enter video url for your project (if any, ex: youtube link). This will be featured on your project page.
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
@@ -209,11 +212,9 @@ function ProjectForm() {
 >
 	{({ open }) =>
         // This is the button that will open the IDKit modal
-        <button onClick={open}>Verify with World ID</button>
+        <Button onClick={open}>Verify with World ID</Button>
     }
 </IDKitWidget>
-
-
 
 						<Button disabled={loading || !address} type="submit">
 							{loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}

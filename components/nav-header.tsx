@@ -26,6 +26,11 @@ const NavHeader = () => {
 				</a>
 				{/* <span className="ml-4 text-xl font-bold">Dcrowd</span> */}
 			</div>
+			{isDcrowd && (
+				<nav className="flex ml-4 text-black-800">
+					Project page
+					</nav>
+				)}
 			{!isDcrowd && (
 				<nav className="flex">
 					<a href="/create-page" className="text-gray-500 hover:underline mx-4">

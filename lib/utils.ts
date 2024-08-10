@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Chain } from "viem";
 import { ethers } from "ethers";
+import { BLOCKSCOUT_MAP } from '@/util/blockscout';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -29,9 +30,19 @@ export const formatCurrency = (amount: number, chain?: Chain) => {
 };
 
 export const getExplorerUrl = (address?: string, chain?: Chain, isTx?: boolean) => {
+	if (!address) {
+		return "";
+	}
 	const prefix = isTx ? "tx" : "address";
-	const baseUrl = chain?.blockExplorers?.default?.url;
-	if (!baseUrl || !address) {
+	const blockscoutPrefix = BLOCKSCOUT_MAP[chain?.id || ""];
+	let baseUrl
+	if (blockscoutPrefix) {
+		baseUrl = `https://${blockscoutPrefix}.blockscout.com`;
+	} else {
+		baseUrl = chain?.blockExplorers?.default?.url;
+	}
+
+	if (!baseUrl) {
 		return "";
 	}
 	return `${baseUrl}/${prefix}/${address}`;
@@ -42,6 +53,9 @@ export const getPlaceholderDescription = () => {
 };
 
 export const getReadableError = (err: any) => {
+	if (!err) {
+		return err
+	}
 	if (err?.info?.error?.message) {
 		return err.info.error.message;
 	} else if (err.message) {

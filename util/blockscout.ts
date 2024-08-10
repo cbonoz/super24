@@ -1,10 +1,10 @@
+import { base, baseSepolia } from 'viem/chains';
 
 
-export const BLOCKSCOUT_MAP = {
+export const BLOCKSCOUT_MAP: Record<string, string> = {
   // chainId => blockscout prefix
-  // TODO: add additional chains as supported/verified
-  84532: 'base-sepolia',
-
-
-
+  [baseSepolia.id]: 'base-sepolia',
+  [base.id]: 'base',
 }
+
+

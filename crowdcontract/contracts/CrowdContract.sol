@@ -17,6 +17,7 @@ contract CrowdContract {
 
     struct Project {
         string title;
+        string ownerName;
         string description;
         string videoUrl;
         string verificationHash;
@@ -38,6 +39,7 @@ contract CrowdContract {
     event DonationReceived(address donor, string message, uint amount);
 
     constructor(string memory _title,
+    string memory _ownerName,
     string memory _description,
     string memory _videoUrl,
     string memory _verificationHash,
@@ -47,6 +49,7 @@ contract CrowdContract {
         pyth = IPyth(_pythAddress);
         project = Project(
             _title,
+            _ownerName,
             _description,
             _videoUrl,
             _verificationHash,
@@ -62,7 +65,7 @@ contract CrowdContract {
         uint fee = pyth.getUpdateFee(priceUpdate);
         pyth.updatePriceFeeds{ value: fee }(priceUpdate);
 
-          // Read the current price from a price feed.
+        // Read the current price from a price feed.
         // Each price feed (e.g., ETH/USD) is identified by a price feed ID.
         // The complete list of feed IDs is available at https://pyth.network/developers/price-feed-ids
         bytes32 priceFeedId = 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace; // ETH/USD

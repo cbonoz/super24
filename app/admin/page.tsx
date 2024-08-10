@@ -3,10 +3,9 @@
 import BasicCard from "@/components/basic-card";
 import RenderObject from "@/components/render-object";
 import { Button } from "@/components/ui/button";
-import { deployContract } from "@/lib/contract/deploy";
 import { useEthersSigner } from "@/lib/get-signer";
 import { getExplorerUrl, getReadableError, isEmpty } from "@/lib/utils";
-import { registerSchema } from '@/util/attest';
+import { getSchema, registerSchema } from '@/util/attest';
 import { siteConfig } from "@/util/site-config";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
@@ -23,6 +22,18 @@ const AdminPage = () => {
 	const currentChain: Chain | undefined = (chains || []).find((c) => c.id === chainId);
 
 	const signer = useEthersSigner({ chainId });
+
+	async function fetchSchema() {
+		if (signer && siteConfig.schemaId) {
+			const res = await getSchema(signer, siteConfig.schemaId, chainId);
+			console.log('schema:', res);
+			setResult(res);
+		}
+	}
+
+	useEffect(() => {
+		fetchSchema();
+}, [signer, siteConfig.schemaId]);
 
 	async function createSchema() {
 		setLoading(true);
@@ -44,7 +55,7 @@ const AdminPage = () => {
 	return (
 		<div className="flex flex-row items-center justify-center mt-8">
 			<BasicCard title={`Deploy ${siteConfig.title} schema`}>
-				{siteConfig.schemaId && <p>schema id: {siteConfig.schemaId}</p>}
+				{siteConfig.schemaId && <p>Active schema id: {siteConfig.schemaId}</p>}
 				{!siteConfig.schemaId && <p>schema id not set</p>}
 
 				<div className="text-md my-4">

@@ -1,18 +1,15 @@
 <p align='center'>
     <img src='https://i.ibb.co/jbpk8Bp/logo.png' width=400 />
 </p>
+
 Dcrowd: Decentralized funding with proof of identity
 ---
 
 Built for Superhack 2024.
 
-While the funding is proceeding you don't tie up your funds.
-
-Earn yield until the project is actually executed.
-
 ### Inspiration
 
-Our team wanted to address the challenges of transparency, accessibility, and efficiency in crowdfunding, particularly for projects in underfunded regions. Traditional platforms like Kiva and Kickstarter have limitations in terms of transaction transparency, funding flexibility, and global accessibility. These platforms often rely on centralized systems that can delay fund distribution, impose significant fees, and restrict access based on geographic and financial constraints. Inspired by these challenges, we aimed to create a decentralized alternative using cutting-edge blockchain technologies.
+Dcrowd was built to address the challenges of transparency, accessibility, and efficiency in crowdfunding, particularly for projects in underfunded regions. Traditional platforms like Kiva and Kickstarter have limitations in terms of transaction transparency, funding flexibility, and global accessibility. These platforms often rely on centralized systems that can delay fund distribution, impose significant fees, and restrict access based on geographic and financial constraints. Inspired by these challenges, we aimed to create a decentralized alternative that doesn't require bank accounts and middlemen, and can be used to mediate funds directly between entrepreneurs and their supporters.
 
 ### What It Does
 
@@ -20,15 +17,16 @@ Dcrowd offers a decentralized platform that enables projects to connect with sup
 
 ### How We Built It
 
-Our team used a combination of blockchain technologies to build Dcrowd:
+Our team used a combination of blockchain technologies to build Dcrowd.
 
-- **Optimism** for multichain transactions, enabling us to deploy on multiple Optimism Layer 2 chains.
-- **Base** for seamless payments and social interactions, ensuring compatibility with the broader Ethereum ecosystem.
-- **Celo** to target underfunded regions, particularly in Africa, facilitating micro-payments and supporting economic inclusion.
-- **EAS (Ethereum Attestation Service)** for secure and verifiable attestations, ensuring the legitimacy of projects.
-- **Pyth** for real-time price feeds, providing accurate financial data to both projects and supporters.
-- **Worldcoin** for identity proof, ensuring secure and verified user identities.
-- **Blockscout** as an alternative to Etherscan, providing transparent and detailed blockchain explorer services.
+Each page is deployed as it's own unique smart contract. And the smart contract's history represents all the engagement with the particular campaign without being mixed with data from other campaigns or users.
+
+- **Optimism** for multichain transactions, enabling us to deploy on multiple Optimism Layer 2 chains at low cost.
+- **Base** the foundation of the Dcrowd smart contract - used for seamless payments and social interactions, ensuring compatibility with the broader Ethereum ecosystem.
+- **Worldcoin** for identity proof, ensuring secure and verified user identities. Users *cannot* create new fundraiser pages without validating their identity on chain via WorldCoin - this is checked at time of each new fundraiser creation.
+- **EAS (Ethereum Attestation Service)** for secure and verifiable attestations, ensuring the legitimacy of projects. Visitors to each project page can endorse the entrepreneur. The attestation proofs also get sent to the smart contract and are emitted as events that can be listened to from external systems or triggers.
+- **Pyth** for real-time price feeds. Used to show an on-chain provided value for a donation supporter gold tier level in the Dcrowd app/UI.
+- **Blockscout**: Provides an improved UI for getting insight into on-chain transactions for each contract.as an alternative to Etherscan, providing transparent and detailed blockchain explorer services.
 
 The project was deployed on cloud infrastructure for easy access and scalability.
 
@@ -42,7 +40,7 @@ We are particularly proud of successfully integrating multiple blockchain techno
 
 ### What We Learned
 
-Throughout the development process, we gained a deep understanding of multichain deployments, particularly on Optimism and Celo. We also learned how to effectively use EAS for secure attestations and how to leverage Pyth's real-time price feeds to enhance financial transparency. Additionally, integrating Worldcoin for identity proof broadened our knowledge of secure, decentralized identity verification systems.
+Throughout the development process, we gained a deep understanding of multichain deployments, particularly on Optimism and Base. We also learned how to effectively use EAS for secure attestations and how to leverage Pyth's real-time price feeds to enhance financial transparency. Additionally, integrating Worldcoin gave a nice introduction to using decentralized identity verification systems in a meaningful app use case (i.e. party/human actor identification).
 
 ### Potential Future Work
 
@@ -50,7 +48,7 @@ Throughout the development process, we gained a deep understanding of multichain
 
 2. Decentralized Governance: Implement a system where supporters can vote on project milestones and key decisions, enhancing community involvement.
 
-3. Yield Generation: Allow funds to earn yield in a decentralized finance (DeFi) protocol until the project is ready to execute, maximizing the value of contributions before disbursement.
+3. Yield Generation: A lot of times campaigns require a certain minimum to become active, and early donators might have their funds locked without any benefit. Adding yield generation could incentivize usage and allow funds to earn yield in a decentralized finance (DeFi) protocol until the project is ready to execute, maximizing the value of contributions before disbursement to the creator and/or original donator.
 
 
 
@@ -107,8 +105,6 @@ Dcrowd
 * Vouch for your friends
 * Get your idea funded
 * Kickbacks for supporting
-
-
 
 No doing:
 Superform

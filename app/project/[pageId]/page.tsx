@@ -18,6 +18,7 @@ import {
 
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+// link
 import { useEffect, useRef, useState } from "react";
 import { Address, Chain, createPublicClient, http } from "viem";
 import {
@@ -45,11 +46,12 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { processMetadataObject, } from "@/lib/contract/interact";
+import { processMetadataObject, sendToProject, } from "@/lib/contract/interact";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@radix-ui/react-select";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { siteConfig } from '@/util/site-config';
 
 interface Params {
 	pageId: string;
@@ -82,13 +84,13 @@ export default function Dcrowd({ params }: { params: Params }) {
 		functionName: "getMetadata",
 	});
 
-	const data = processMetadataObject(readData as any || DEMO_METADATA as ContractMetadata);
+	const data = processMetadataObject(readData as any);
 
 	const chainId = useChainId();
 	const currentChain: Chain | undefined = (chains || []).find((c) => c.id === chainId);
 
 	const signer = useEthersSigner({ chainId });
-	const isOwner = data?.creator === address;
+	const isOwner = data?.creator === address
 
 	// Log data on change
 	useEffect(() => {
@@ -111,10 +113,12 @@ export default function Dcrowd({ params }: { params: Params }) {
 
 	const invalid = !loading && !data;
 
+	const pageError = error || getReadableError(readError)
+
 	const getTitle = () => {
 		if (data?.title) {
 			return data?.title || "Project page";
-		} else if (error || invalid) {
+		} else if (pageError || invalid) {
 			return "Error accessing page";
 		}
 		return "Project page";
@@ -122,44 +126,68 @@ export default function Dcrowd({ params }: { params: Params }) {
 
 	const hasProject = !isEmpty(data?.title);
 	const currency = currentChain?.nativeCurrency?.symbol || "ETH";
-	const hasdonations = !isEmpty(data?.donations);
-	const handleNotClaimed = !hasProject && !loading;
+	const hasDonations = !isEmpty(data?.donations);
 
-	if (handleNotClaimed) {
-		return (
-			<div className="flex flex-col items-center justify-center mt-8">
-				<div>This handle has not been claimed by a project yet!</div>
-				<div>
-					Click&nbsp;
-					<a href="/create-page" className="hover:underline text-blue-500">
-						here
-					</a>
-					&nbsp;to claim it!
-				</div>
-			</div>
-		);
+	async function sendPayment() {
+		setError(null);
+		try {
+			const res = await sendToProject(
+				signer,
+				contractAddress,
+				message,
+				donation
+			);
+			setResult(res);
+		} catch (err) {
+			console.error("Error sending payment:", err);
+			setError(getReadableError(err));
+		} finally {
+			setSendLoading(false);
+		}
+	}
+
+	async function sendAttestation() {
+		setError(null);
+		try {
+			const res = alert('attestation sent');
+			setResult(res);
+		} catch (err) {
+			console.error("Error sending attestation:", err);
+			setError(getReadableError(err));
+		} finally {
+			setSendLoading(false);
+		}
 	}
 
 	return (
-		// black background
-		<div className="bg-black px-20">
-			{!!data?.videoUrl && <ReactPlayer url={data.videoUrl} controls={true} height="800px" width="100%" />}
+		<div className="bg-black px-32 h-full">
+			{!!data?.videoUrl &&
+			<div className="flex justify-center">
+			<ReactPlayer url={data.videoUrl} controls={true} height="800px" width="100%" />
+			</div>}
 
 			<div className="flex flex-col items-center justify-center">
 				<BasicCard
-					title={""}
-					// description="Find and find a project page using your wallet."
+					title={getTitle()}
 					className="max-w-[1000px] px-4 mb-4 mt-4"
 				>
 					{invalid && (
 						<div className="font-bold text-red-500">
-							This page may not exist or may be on another network, double check your currently
+							Project page not found, double check your url address and currently
 							connected network.
 						</div>
 					)}
 
 							{hasProject && <div className="mt-4">
-								<div className="text-sm text-gray-500">Project address</div>
+								{/* title */}
+								{/* <div className="text-2xl font-bold">{data?.title}</div> */}
+
+								{/* description */}
+								<div className="mt-2">{data?.description}</div>
+
+								{/* donations */}
+
+								<div className="mt-4 text-sm text-gray-500">Creator address</div>
 								<Link
 									target="_blank"
 									className="text-sm hover:underline text-blue-500"
@@ -169,20 +197,55 @@ export default function Dcrowd({ params }: { params: Params }) {
 								</Link>
 								<div>Payments will go to this address. Only donate to trusted projects.</div>
 
+								<Link
+												target="_blank"
+									className="text-sm hover:underline text-blue-500"
+								href={getExplorerUrl(contractAddress, currentChain)}>
+										View project contract
+								</Link>
+
 							<hr className="my-4" />
 							<Separator />
+									<Accordion type="single" collapsible className="w-full" defaultValue={'donate'}>
+									<AccordionItem value="endorse">
+									<AccordionTrigger>
+												<div className="text-2xl font-bold">Endorse this entrepreneur</div>
+											</AccordionTrigger>
+											<AccordionContent>
+											<div className="p-2">
 
-							{!isOwner && (
-								<div>
-									<Accordion type="single" collapsible className="w-full">
-										<AccordionItem value="item-2">
+											<Textarea
+														className="w-full mt-2"
+														placeholder="Enter your message"
+														value={message}
+														onChange={(e) => setMessage(e.target.value)}
+													/>
+												</div>
+
+												<Button
+														className="mt-4"
+														onClick={() => {
+															setSendLoading(true);
+															sendAttestation();
+														}}
+														disabled={sendLoading}
+													>
+														{sendLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+														Endorse
+													</Button>
+											</AccordionContent>
+
+										</AccordionItem>
+										<AccordionItem value="donate"
+										aria-expanded={true}
+										>
 											<AccordionTrigger>
-												<div className="text-2xl font-bold">Add a new video request</div>
+												<div className="text-2xl font-bold">Donate</div>
 											</AccordionTrigger>
 											<AccordionContent>
 												<div className="p-2">
 													<div className="italic">
-														Video donations will be received by the project via a smart contract
+														Any payment will be received by the project via a smart contract
 														transaction.
 													</div>
 
@@ -193,7 +256,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 														onChange={(e) => setMessage(e.target.value)}
 													/>
 													<div className="text-sm text-gray-500">
-														Describe what video you would like this project to make next!
+														Enter a personalized message to the creator. This will be broadcast as an event from the smart contract with the donation amount!
 													</div>
 
 													{/* Donation */}
@@ -210,20 +273,17 @@ export default function Dcrowd({ params }: { params: Params }) {
 														className="mt-4"
 														onClick={() => {
 															setSendLoading(true);
-															alert('send request');
+															sendPayment();
 														}}
 														disabled={sendLoading}
 													>
 														{sendLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-														Send request
+														Send
 													</Button>
 												</div>
 											</AccordionContent>
 										</AccordionItem>
-									</Accordion>
-								</div>
-							)}
-							</div>}
+									</Accordion></div> }
 
 					{result && (
 						<div className="mt-4">
@@ -232,7 +292,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 						</div>
 					)}
 
-					{error && <div className="mt-2 text-red-500">{error}</div>}
+					{pageError && <div className="mt-2 text-red-500">{pageError}</div>}
 				</BasicCard>
 
 				<Dialog

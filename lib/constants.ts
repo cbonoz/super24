@@ -3,7 +3,7 @@ import { formatDate } from "./utils";
 
 export const DEMO_REQUEST: ContractRequest = {
 	name: "The Unseen Africa",
-	description: "Raising money for a documentary series on entrepreneurship in other countries, starting with Africa",
+	description: "Raising money for a documentary series on entrepreneurship in other countries, starting with Africa. Each supporter will be featured in one of the episodes and credits. Every bit helps!",
 	videoUrl: "https://www.youtube.com/watch?v=aeFYQFjoWEM",
 	verificationHash: "0x123",
 };

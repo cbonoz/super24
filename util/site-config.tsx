@@ -11,9 +11,9 @@ export const siteConfig = {
 			"The admin page contains information for managing project and supporter interactions.",
 	},
 	valueSentences: [
-		"Smart contract mediated crowdfunding for transparent and secure fundraising",
-		"Decentralized platform ensuring accountability and community-driven projects",
-		"No middlemen or central authority required",
+		"Smart contract mediated crowdfunding for transparent and secure fundraising on Base and Optimism",
+		"Identity verification for entrepreneurs via Worldcoin with endorsements by supporters",
+		"Pay globally via smart contract transactions. No bank account required",
 	],
 	about: [
 		{

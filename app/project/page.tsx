@@ -14,11 +14,11 @@ const Project = () => {
         <div className="flex flex-row items-center justify-center mt-8">
             <BasicCard
                 title="Find project"
-                description="Find and find a project page using your wallet."
+                description="Find a project page using an existing contract address."
                 className="min-w-[400px] p-4"
             >
                 <Input
-                    placeholder="Enter project handle"
+                    placeholder="Enter project address"
                     value={pageId}
                     onChange={(e) => setPageId(e.target.value)}
                 />

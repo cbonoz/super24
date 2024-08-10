@@ -60,7 +60,7 @@ export const processMetadataObject = (
 		description: result.description,
 		videoUrl: result.videoUrl,
 		donationCount: result.donationCount,
-		donations: result.donations.map((d) => {
+		donations: (result.donations || []).map((d) => {
 			return {
 				...d,
 				donation: weiToEth(d.donation),
