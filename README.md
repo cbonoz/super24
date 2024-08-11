@@ -164,7 +164,7 @@ Building Dcrowd definitely gave an improved understanding of multichain deployme
   <img src="img/about.png" alt="About" width="600">
 </p>
 
-### Price feed websocket connected for payment/support tiers using Pyth feed oracles
+### Price feed websocket connected for payment tiers using Pyth oracles
 <p align="center">
   <img src="img/websocket.png" alt="WebSocket" width="600">
 </p>
