@@ -7,7 +7,7 @@ Dcrowd: Decentralized funding with proof of identity
 
 Built for Superhack 2024
 
-Demo url: <a href="https://dcrowd.vercel.app" target="_blank">dcrowd.vercel.app</a> (currently Base/Mode L2 testnets)
+Demo url: <a href="https://dcrowd.vercel.app" target="_blank">https://dcrowd.vercel.app</a> (currently Base/Mode L2 testnets)
 
 Demo video (~4min):
 
