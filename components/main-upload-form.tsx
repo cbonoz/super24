@@ -330,7 +330,7 @@ function ProjectForm() {
 								clipRule="evenodd"
 							></path>
 						</svg>
-						<div className="text-xl mb-4 mt-1">
+						<div className="text-xl mb-4 mt-4">
 							Project created successfully
 						</div>
 						<div className="flex flex-col items-center">
@@ -341,7 +341,7 @@ function ProjectForm() {
 						<Link
 							href={result.url}
 							target="_blank"
-							className="text-blue-500 text-sm hover:underline"
+							className="text-blue-500 mb-2 text-sm hover:underline"
 							rel="noopener noreferrer"
 						>
 							{result.url}
