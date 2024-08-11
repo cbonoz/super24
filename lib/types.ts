@@ -21,6 +21,12 @@ export interface Donation {
     createdAt?: any;
 }
 
+export interface EasMetadata {
+    eas: string
+    schema: string
+    explorer: string
+}
+
 // struct Project {
 //     string title;
 //     string description;

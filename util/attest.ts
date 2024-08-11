@@ -4,7 +4,7 @@ export const BASE_SEPOLIA_EAS_ADDRESS =
 export const BASE_SEPOLIA_SCHEMA_ADDRESS =
 	"0x4200000000000000000000000000000000000020"
 
-import { Endorsement } from "@/lib/types"
+import { EasMetadata, Endorsement } from "@/lib/types"
 import {
 	EAS,
 	Offchain,
@@ -14,7 +14,7 @@ import {
 import { ethers } from "ethers"
 import { baseSepolia } from "viem/chains"
 
-export const SCHEMA_MAP: Record<string, object> = {
+export const SCHEMA_MAP: Record<string, EasMetadata> = {
 	[baseSepolia.id]: {
 		eas: BASE_SEPOLIA_EAS_ADDRESS,
 		schema: BASE_SEPOLIA_SCHEMA_ADDRESS,
@@ -23,10 +23,11 @@ export const SCHEMA_MAP: Record<string, object> = {
 }
 
 export const getAttestationUrl = (chainId?: number) => {
-	if (!chainId || !SCHEMA_MAP[chainId]) {
+	const attestationPrefix: any = SCHEMA_MAP[chainId || baseSepolia.id]
+	if (!attestationPrefix) {
 		return ""
 	}
-	return `https://${SCHEMA_MAP[chainId].explorer}.easscan.org/schema/view/${process.env.NEXT_PUBLIC_SCHEMA_ID}`
+	return `https://${attestationPrefix}.easscan.org/schema/view/${process.env.NEXT_PUBLIC_SCHEMA_ID}`
 }
 
 const ENDORSE_SCHEMA =
