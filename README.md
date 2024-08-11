@@ -48,14 +48,6 @@ Payment via app contract (.001 ETH): https://base-sepolia.blockscout.com/tx/0xa6
 Mode testnet: https://dcrowd.vercel.app/project/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db
 Contract: https://sepolia.explorer.mode.network/address/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db
 
-### Updating the smart contract
-
-1. Update `CrowdContract.sol` in `/crowdcontract/contracts`.
-
-2. Install dependencies via yarn in the root folder. Run `npx hardhat compile` from `/crowdcontract`.
-
-3. Copy contents (includes ABI) to `metadata.tsx#APP_CONTRACT`.
-
 ### How to run/deploy
 
 1. Fill in values in `.env.sample` with the exception of the contract address, copy to a new file `.env`. The contract address for the deployment will be specified in a later step.
@@ -67,6 +59,14 @@ Contract: https://sepolia.explorer.mode.network/address/0x973Ec243E24Bf62b56b0F3
 4. Update the schema id from step (3) in `.env`. Restart the web server.
 
 5. Rebuild and redeploy the project.
+
+### Updating the smart contract (optional)
+
+1. Update `CrowdContract.sol` in `/crowdcontract/contracts`.
+
+2. Install dependencies via yarn in the root folder. Run `npx hardhat compile` from `/crowdcontract`.
+
+3. Copy contents (includes ABI) to `metadata.tsx#APP_CONTRACT`.
 
 ### Challenges We Ran Into
 
