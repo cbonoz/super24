@@ -39,10 +39,10 @@ export const getExplorerUrl = (
 		return ""
 	}
 	const prefix = isTx ? "tx" : "address"
-	const blockscoutPrefix = BLOCKSCOUT_MAP[chain?.id || ""]
+	const blockscoutUrl = BLOCKSCOUT_MAP[chain?.id || ""]
 	let baseUrl
-	if (blockscoutPrefix) {
-		baseUrl = `https://${blockscoutPrefix}.blockscout.com`
+	if (blockscoutUrl) {
+		baseUrl = blockscoutUrl
 	} else {
 		baseUrl = chain?.blockExplorers?.default?.url
 	}

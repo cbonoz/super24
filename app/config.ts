@@ -1,8 +1,8 @@
 import { createConfig, http, cookieStorage, createStorage } from 'wagmi'
-import { mainnet, baseSepolia, sepolia } from 'wagmi/chains'
+import { mainnet, baseSepolia, sepolia, modeTestnet } from 'wagmi/chains'
 
 export const config = createConfig({
-    chains: [baseSepolia],
+    chains: [baseSepolia, modeTestnet],
     ssr: true,
     storage: createStorage({
         storage: cookieStorage,
@@ -10,6 +10,7 @@ export const config = createConfig({
     transports: {
         // [mainnet.id]: http(),
         [sepolia.id]: http(),
+        [modeTestnet.id]: http(),
         [baseSepolia.id]: http(),
     },
 })

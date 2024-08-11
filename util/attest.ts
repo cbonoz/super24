@@ -23,7 +23,8 @@ export const SCHEMA_MAP: Record<string, EasMetadata> = {
 }
 
 export const getAttestationUrl = (chainId?: number) => {
-	const attestationPrefix: any = SCHEMA_MAP[chainId || baseSepolia.id]
+	const attestationPrefix: any =
+		SCHEMA_MAP[chainId || ""] || SCHEMA_MAP[baseSepolia.id]
 	if (!attestationPrefix) {
 		return ""
 	}

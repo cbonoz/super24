@@ -103,7 +103,8 @@ function ProjectForm() {
 		try {
 			const res: any = {}
 			const pythAddress: any =
-				PYTH_CONTRACT_MAP[currentChain?.id || baseSepolia.id]
+				PYTH_CONTRACT_MAP[currentChain?.id || ""] ||
+				PYTH_CONTRACT_MAP[baseSepolia.id]
 
 			const verificationHash = values.verificationHash || proof || ""
 

@@ -13,37 +13,37 @@ Dcrowd was built to address the challenges of transparency, accessibility, and e
 
 ### What It Does
 
-Dcrowd offers a decentralized platform that enables projects to connect with supporters globally, ensuring transparent, secure, and immediate transactions. Unlike Kickstarter, which primarily serves projects in well-established markets, or Kiva, which focuses on microloans with a more complex application process, Dcrowd simplifies the process by using smart contracts to facilitate donations and support requests. The platform is designed to be inclusive, supporting projects from third-world countries through Celo, and ensuring secure identity verification via Worldcoin. Additionally, Dcrowd integrates price feeds from Pyth to provide accurate financial data and uses EAS for reliable attestations, making it a robust and trustworthy solution.
+Dcrowd offers a decentralized platform that enables projects to connect with supporters globally, ensuring transparent, secure, and immediate transactions. Unlike Kickstarter, which primarily serves projects in well-established markets, or Kiva, which focuses on microloans with a more complex application process, Dcrowd simplifies the process by using smart contracts to facilitate donations and support requests. The platform is designed to be inclusive, supporting builders from third-world countries without traditional bank accounts, and ensuring secure identity verification via Worldcoin. Additionally, Dcrowd integrates price feeds from Pyth to provide accurate financial data and uses EAS for reliable attestations, making it a robust and trustworthy solution.
+
+If using simulator/sandbox mode, use simulator.worldcoin.org from your mobile device to authenticate identity when creating a new project.
 
 ### How We Built It
 
 Our team used a combination of blockchain technologies to build Dcrowd.
 
-Each page is deployed as it's own unique smart contract. And the smart contract's history represents all the engagement with the particular campaign without being mixed with data from other campaigns or users.
+Each page is deployed as its own unique smart contract, and the smart contract's history represents all the engagement with the particular initiative without being mixed with data from other campaigns or users.
 
-- **Optimism** for multichain transactions, enabling us to deploy on multiple Optimism Layer 2 chains at low cost.
+- **Optimism** for multichain transactions. Optimism enables Dcrowd to operate across multiple Layer 2 chains at low cost, facilitating efficient and scalable transactions. With both Base and Mode networks integrated, Dcrowd can deploy smart contracts on these chains, allowing for broader reach and reduced gas fees for users.
 - **Base** the foundation of the Dcrowd smart contract - used for seamless payments and social interactions, ensuring compatibility with the broader Ethereum ecosystem.
-- **Worldcoin** for identity proof, ensuring secure and verified user identities. Users *cannot* create new fundraiser pages without validating their identity on chain via WorldCoin - this is checked at time of each new fundraiser creation.
-
-If using simulator/sandbox mode, use simulator.worldcoin.org from your mobile device to authenticate identity.
-
-- **EAS (Ethereum Attestation Service)** for secure and verifiable attestations, ensuring the legitimacy of projects. Visitors to each project page can endorse the entrepreneur. The attestation proofs also get sent to the smart contract and are emitted as events that can be listened to from external systems or triggers.
-- **Pyth** for real-time price feeds. Used to show an on-chain provided value for a donation supporter gold tier level in the Dcrowd app/UI.
+- **Worldcoin** for identity proof, ensuring secure and verified user identities. Users *cannot* create new fundraiser pages without validating their identity on chain via WorldCoin andthis is checked at time of each new fundraiser creation. This process ensures that only verified individuals can launch projects, reducing the risk of fraudulent activities.
+- **EAS (Ethereum Attestation Service)** for secure and verifiable attestations, ensuring the legitimacy of projects. Visitors to each project page can endorse the entrepreneur. The attestation proofs also get sent to the smart contract and are emitted as events that can be listened to from external systems or triggers. Supported attestations for a given project are linked directly on the project detail page.
+- **Pyth** for real-time price feeds. Used to show an on-chain provided value for a donation supporter gold tier level in the Dcrowd app/UI. For example, the gold tier level for supporters can be adjusted based on the latest Ethereum price feed, ensuring fair and up-to-date valuations. A websocket is used to channel these price feeds, and the system is designed to expand in the future to support other assets and conversions.
+- **Mode** Mode is integrated into Dcrowd to provide a cost-effective alternative for transactions. This integration ensures that users can participate in fundraising activities with minimal transaction fees, making it accessible to a broader audience.
 - **Blockscout**: Provides an improved UI for getting insight into on-chain transactions for each contract.as an alternative to Etherscan, providing transparent and detailed blockchain explorer services.
 
 This project is deployed on Vercel and is available in a preview/beta use case at <a href="https://dcrowd.vercel.app" target="_blank">dcrowd.vercel.app</a>.
 
 ### Challenges We Ran Into
 
-One of the main challenges we faced was integrating multiple Optimism/L2 technologies, each with its own set of APIs and protocols. For instance, ensuring seamless communication between Optimism and Base while maintaining transaction speed and security was a complex task. Additionally, this was our first time using EAS for attestations, which required a deep understanding of its API and integration process. Another challenge was deploying the project on Celo, particularly adapting our platform to meet the needs of users in underfunded regions where internet connectivity and financial literacy can be limited.
+One of the main challenges we faced was integrating multiple Optimism/L2 technologies, each with its own set of APIs and protocols. For instance, ensuring seamless communication between Optimism and Base while maintaining transaction speed and security was a complex task. Additionally, this was our first time using EAS for attestations, which required a good understanding of its API and integration process across multiple chains.
 
 ### Accomplishments That We're Proud Of
 
-We are particularly proud of successfully integrating multiple blockchain technologies to create a seamless and user-friendly experience. The deployment on Celo to support projects in third-world countries stands out as a significant achievement, as it aligns with our mission to democratize access to funding. The use of Worldcoin for secure identity proof was another highlight, ensuring that all users, regardless of location, can participate in the platform safely.
+We are particularly proud of successfully integrating multiple blockchain technologies to create a seamless and user-friendly experience. The deployment on OP Stack networks such as Base/Mode to support projects in third-world countries stands out as a significant achievement, as it aligns with our mission to democratize access to funding. The use of Worldcoin for secure identity proof was another highlight, ensuring that humans, regardless of location, are the designated users that can create fundraisers (reducing or eliminating automated fradulent listings).
 
 ### What We Learned
 
-Throughout the development process, we gained a deep understanding of multichain deployments, particularly on Optimism and Base. We also learned how to effectively use EAS for secure attestations and how to leverage Pyth's real-time price feeds to enhance financial transparency. Additionally, integrating Worldcoin gave a nice introduction to using decentralized identity verification systems in a meaningful app use case (i.e. party/human actor identification).
+Building Dcrowd definitely gave an improved understanding of multichain deployments, particularly on Optimism and Base. We also learned how to effectively use EAS for secure attestations and how to leverage Pyth's real-time price feeds to enhance financial transparency. Additionally, integrating Worldcoin gave a nice introduction to using decentralized identity verification systems in a meaningful app use case (i.e. party/human actor identification).
 
 ### Potential Future Work
 
@@ -52,8 +52,6 @@ Throughout the development process, we gained a deep understanding of multichain
 2. Decentralized Governance: Implement a system where supporters can vote on project milestones and key decisions, enhancing community involvement.
 
 3. Yield Generation: A lot of times campaigns require a certain minimum to become active, and early donators might have their funds locked without any benefit. Adding yield generation could incentivize usage and allow funds to earn yield in a decentralized finance (DeFi) protocol until the project is ready to execute, maximizing the value of contributions before disbursement to the creator and/or original donator.
-
-
 
 <!-- Optimism: Multichain - submit to multiple optimism L2 chains.
 Base: Payments/social (evm compatible)
