@@ -135,6 +135,7 @@ Building Dcrowd definitely gave an improved understanding of multichain deployme
 </p>
 
 ### Donate
+<p>Note creators cannot donate to their own projects</p>
 <p align="center">
   <img src="img/donate.png" alt="Donate" width="600">
 </p>
