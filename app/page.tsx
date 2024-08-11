@@ -1,7 +1,6 @@
 import { RouteButtons } from "@/components/route-buttons";
 import { siteConfig } from "@/util/site-config";
 import { Metadata } from "next";
-import { CheckIcon } from "@radix-ui/react-icons";
 import Image from 'next/image';
 
 

@@ -2,7 +2,8 @@ import { ContractMetadata, ContractRequest } from "./types";
 import { formatDate } from "./utils";
 
 export const DEMO_REQUEST: ContractRequest = {
-	name: "The Unseen Africa",
+	title: "The Unseen Africa",
+	ownerName: "John D.",
 	description: "Raising money for a documentary series on entrepreneurship in other countries, starting with Africa. Each supporter will be featured in one of the episodes and credits. Every bit helps!",
 	videoUrl: "https://www.youtube.com/watch?v=aeFYQFjoWEM",
 	verificationHash: "0x123",
@@ -28,3 +29,5 @@ export const DEMO_METADATA: ContractMetadata = {
 	createdAt: "2022-01-01",
 	isValue: true,
 };
+
+

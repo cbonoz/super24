@@ -1,5 +1,6 @@
 export interface ContractRequest {
-    name: string
+    title: string
+    ownerName: string
     description: string
     verificationHash: string
     videoUrl?: string

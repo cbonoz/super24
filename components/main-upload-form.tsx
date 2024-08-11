@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
 	Form,
 	FormControl,
@@ -13,33 +13,38 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
 import {
 	getExplorerUrl,
 	getPlaceholderDescription,
 	isEmpty,
 	dcrowdUrl,
 	getReadableError,
-} from "@/lib/utils";
-import Link from "next/link";
-import { Textarea } from "./ui/textarea";
-import { ReloadIcon } from "@radix-ui/react-icons";
+	abbreviate,
+} from "@/lib/utils"
+import Link from "next/link"
+import { Textarea } from "./ui/textarea"
+import { ReloadIcon } from "@radix-ui/react-icons"
 import {
 	useAccount,
 	useChainId,
 	useChains,
 	useWaitForTransactionReceipt,
 	useWriteContract,
-} from "wagmi";
-import { Address, Chain, createPublicClient, http } from "viem";
-import { useEthersSigner } from "@/lib/get-signer";
-import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit';
-import { DEMO_REQUEST } from '@/lib/constants';
-import { deployContract } from '@/lib/contract/deploy';
-import { PYTH_CONTRACT_MAP } from '@/util/pyth';
-import { baseSepolia } from 'viem/chains';
+} from "wagmi"
+import { Address, Chain, createPublicClient, http } from "viem"
+import { useEthersSigner } from "@/lib/get-signer"
+import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit"
+import { DEMO_REQUEST } from "@/lib/constants"
+import { deployContract } from "@/lib/contract/deploy"
+import { PYTH_CONTRACT_MAP } from "@/util/pyth"
+import { baseSepolia } from "viem/chains"
+import { postWorldcoinVerification } from "@/util/worldcoin"
+import { CheckCircle, CheckIcon } from "lucide-react"
+import { Separator } from "@radix-ui/react-select"
+import BasicTooltip from "./BasicTooltip"
 
 const formSchema = z.object({
 	title: z.string().min(3, {
@@ -48,90 +53,113 @@ const formSchema = z.object({
 	description: z.string().min(10, {
 		message: "Project description must be at least 10 characters.",
 	}),
-	verificationHash: z.string(),
+	ownerName: z.string().optional(),
+	verificationHash: z.string().optional(),
 	videoUrl: z.string().optional(),
-});
+})
 
 function ProjectForm() {
-	const [result, setResult] = useState<any>();
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<any>(null);
-	const { address } = useAccount();
-	const chainId = useChainId();
-	const chains = useChains();
-	const currentChain: Chain | undefined = (chains || []).find((c) => c.id === chainId);
+	const [result, setResult] = useState<any>()
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState<any>(null)
+	const [proof, setProof] = useState<any>(null)
+	const { address } = useAccount()
+	const chainId = useChainId()
+	const chains = useChains()
+	const currentChain: Chain | undefined = (chains || []).find(
+		(c) => c.id === chainId
+	)
 
-	const signer = useEthersSigner({ chainId });
+	const signer = useEthersSigner({ chainId })
 
 	const setDemoData = async () => {
-		form.setValue("title", DEMO_REQUEST.name)
+		form.setValue("title", DEMO_REQUEST.title)
 		form.setValue("description", DEMO_REQUEST.description)
-		form.setValue("videoUrl",DEMO_REQUEST.videoUrl);
-		form.setValue("verificationHash", "");
-	};
+		form.setValue("videoUrl", DEMO_REQUEST.videoUrl)
+		form.setValue("ownerName", DEMO_REQUEST.ownerName)
+		form.setValue("verificationHash", "")
+	}
 
 	const clearForm = () => {
-		form.setValue("title", "");
-		form.setValue("description", "");
-		form.setValue("videoUrl", "");
-		form.setValue("verificationHash", "");
-	};
+		form.setValue("title", "")
+		form.setValue("description", "")
+		form.setValue("videoUrl", "")
+		form.setValue("ownerName", "")
+		form.setValue("verificationHash", "")
+	}
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {},
-	});
+	})
 
 	// Define a submit handler.
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const { title, description, videoUrl, verificationHash } = values;
-		console.log("values", values);
-
-		setLoading(true);
-		setError(null);
+		const { title, ownerName, description, videoUrl } = values
+		console.log("values", values)
+		setLoading(true)
+		setError(null)
 
 		try {
-			const res: any = {};
+			const res: any = {}
+			const pythAddress: any =
+				PYTH_CONTRACT_MAP[currentChain?.id || baseSepolia.id]
 
-			const pythAddress: string = PYTH_CONTRACT_MAP[currentChain?.id || baseSepolia.id];
+			const verificationHash = values.verificationHash || proof || ""
+
 			const contractResult = await deployContract(
 				signer,
 				title,
+				ownerName || "",
 				description,
 				videoUrl || "",
 				verificationHash,
 				currentChain?.name || "ethereum",
 				pythAddress
-			);
+			)
 
-			console.log("contractResult", contractResult);
-			const address = contractResult.target;
-			res["contractUrl"] = getExplorerUrl(address, currentChain, true);
+			console.log("contractResult", contractResult)
+			const address = contractResult.target
+			res["contractUrl"] = getExplorerUrl(address, currentChain, false)
 			res["message"] =
-				"Project created successfully. Include the url below in your social media profiles.";
-			res["url"] = dcrowdUrl(address);
-			setResult(res);
+				"Project created successfully. Include the url below in your social media profiles."
+			res["url"] = dcrowdUrl(address)
+			setResult(res)
 			// scroll to result
-			window.scrollTo(0, document.body.scrollHeight);
-			clearForm();
+			window.scrollTo(0, document.body.scrollHeight)
+			clearForm()
 		} catch (err: any) {
-			console.error(err);
-			setError(getReadableError(err));
+			console.error(err)
+			setError(getReadableError(err))
 		} finally {
-			setLoading(false);
+			setLoading(false)
 		}
 	}
 
 	async function handleVerify(proof: any) {
-		console.log("proof", proof);
+		console.log("proof", proof)
+		try {
+			const res = await postWorldcoinVerification(proof)
+			console.log("verification result", res)
+		} catch (err) {
+			console.error("Error sending attestation:", err)
+			setError(getReadableError(err))
+		}
 	}
 
 	const onSuccess = async (result: any) => {
-		console.log("onSuccess", result);
+		console.log("onSuccess", result)
+		// alert(
+		// 	"Worldcoin verification successful, result: " + JSON.stringify(result)
+		// )
+		// set form value
+		setProof(result.proof)
+		// form.setValue("verificationHash", result.proof)
 	}
 
-	const hasResult = !isEmpty(result);
-	const currency = currentChain?.nativeCurrency?.symbol || "ETH";
+	const hasResult = !isEmpty(result)
+	const currency = currentChain?.nativeCurrency?.symbol || "ETH"
+	const hasProof = !!proof
 
 	return (
 		<div>
@@ -142,11 +170,10 @@ function ProjectForm() {
 						className="hover:underline text-blue-500 cursor-pointer pointer"
 						onClick={setDemoData}
 					>
-						Set demo data
+						Set example
 					</a>
 
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
 						{/* Name */}
 						<FormField
 							control={form.control}
@@ -185,38 +212,92 @@ function ProjectForm() {
 							)}
 						/>
 
-						{/* Videos */}
+						<FormField
+							control={form.control}
+							name="ownerName"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Enter name (recommended)</FormLabel>
+									<FormControl>
+										<Input
+											placeholder={`Enter project owner name (or leave blank)`}
+											{...field}
+										/>
+									</FormControl>
+									<FormDescription>Project owner name</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						{/* Promo video */}
 						<FormField
 							control={form.control}
 							name="videoUrl"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Enter featured video url</FormLabel>
+									<FormLabel>Enter featured video url (recommended)</FormLabel>
 									<FormControl>
-										<Textarea rows={3} placeholder="Enter video url" {...field} />
+										<Textarea
+											rows={1}
+											placeholder="Enter video url"
+											{...field}
+										/>
 									</FormControl>
 									<FormDescription>
-										Enter video url for your project (if any, ex: youtube link). This will be featured on your project page.
+										Enter video url for your project (if any, ex: youtube link).
+										This will be featured on your project page.
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 
-<IDKitWidget
-	app_id={process.env.NEXT_PUBLIC_WORLDCOIN_APP_ID as any} // obtained from the Developer Portal
-	action="create-fundraiser" // obtained from the Developer Portal
-	onSuccess={onSuccess} // callback when the modal is closed
-	handleVerify={handleVerify} // callback when the proof is received
-	verification_level={VerificationLevel.Device}
->
-	{({ open }) =>
-        // This is the button that will open the IDKit modal
-        <Button onClick={open}>Verify with World ID</Button>
-    }
-</IDKitWidget>
+						<IDKitWidget
+							app_id={process.env.NEXT_PUBLIC_WORLDCOIN_APP_ID as any} // obtained from the Developer Portal
+							action="create-fundraiser" // obtained from the Developer Portal
+							onSuccess={onSuccess} // callback when the modal is closed
+							handleVerify={handleVerify} // callback when the proof is received
+							verification_level={VerificationLevel.Device}
+						>
+							{({ open }: { open: any }) => (
+								// This is the button that will open the IDKit modal
+								<Button
+									variant={"outline"}
+									disabled={loading || !address || hasProof}
+									onClick={(e) => {
+										e.preventDefault()
+										open()
+									}}
+								>
+									{!hasProof
+										? "Add verification with World ID"
+										: "World ID verified"}
+									{/* check form value */}
+									{hasProof && (
+										<span className="ml-2 text-sm text-gray-500">
+											<CheckCircle color="green" />
+										</span>
+									)}
+								</Button>
+							)}
+						</IDKitWidget>
+						{hasProof && (
+							<span className="ml-2">
+								Proof:
+								<BasicTooltip tooltip={proof}>
+									{abbreviate(proof, 8)}
+								</BasicTooltip>
+							</span>
+						)}
 
-						<Button disabled={loading || !address} type="submit">
+						<Separator />
+
+						<Button
+							variant={"default"}
+							disabled={loading || !address}
+							type="submit"
+						>
 							{loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
 							{!address ? "Connect wallet to continue" : "Create project"}
 						</Button>
@@ -263,14 +344,14 @@ function ProjectForm() {
 							{result.url}
 						</Link>
 						<div className="mt-2">
-							{result?.txUrl && (
+							{result?.contractUrl && (
 								<Button
 									variant={"secondary"}
 									onClick={() => {
-										window.open(result.txUrl);
+										window.open(result.contractUrl, "_blank")
 									}}
 								>
-									View transaction
+									View contract
 								</Button>
 							)}
 							&nbsp;
@@ -278,19 +359,26 @@ function ProjectForm() {
 								<Button
 									variant={"default"}
 									onClick={() => {
-										window.open(result.url);
+										window.open(result.url, "_blank")
 									}}
 								>
 									View project page
 								</Button>
 							)}
 						</div>
+						<div>
+							<div className="mt-4">
+								<div className="text-gray-500 text-sm">
+									Verification hash: {form.watch("verificationHash")}
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			)}
 			{error && <div className="mt-2 text-red-500 max-w-3xl">{error}</div>}
 		</div>
-	);
+	)
 }
 
-export default ProjectForm;
+export default ProjectForm

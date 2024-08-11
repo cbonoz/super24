@@ -64,11 +64,11 @@ const AdminPage = () => {
 
 				<Button onClick={createSchema} disabled={loading}>
 					{loading && (
-						<span className="animate-spin">
+						<span className="animate-spin mr-1">
 							<ReloadIcon />
 						</span>
 					)}
-					&nbsp; Deploy schema
+					Deploy new schema
 				</Button>
 
 				{loading && (

@@ -1,9 +1,10 @@
-import { getExplorerUrl } from "@/lib/utils";
-import Link from "next/link";
+import { getExplorerUrl } from "@/lib/utils"
+import Link from "next/link"
 
 export const siteConfig = {
 	title: "Dcrowd",
-	description: "A decentralized crowdfunding platform connecting projects with supporters through blockchain technology",
+	description:
+		"A decentralized crowdfunding platform connecting projects with supporters through blockchain technology",
 	isLocal: process.env.NEXT_PUBLIC_ENV === "development",
 	schemaId: process.env.NEXT_PUBLIC_SCHEMA_ID as string,
 	admin: {
@@ -13,8 +14,12 @@ export const siteConfig = {
 	valueSentences: [
 		"Smart contract mediated crowdfunding for transparent and secure fundraising on Base and Optimism",
 		"Identity verification for entrepreneurs via Worldcoin with endorsements by supporters",
-		"Pay globally via smart contract transactions. No bank account required",
+		"Global payments enabled via smart contract transactions. No bank account required",
 	],
+	create: {
+		description:
+			"Create a new project fundraiser page. This item will become publicly available for other users to discover.",
+	},
 	about: [
 		{
 			title: "What is Dcrowd?",
@@ -36,7 +41,8 @@ export const siteConfig = {
 	steps: [
 		{
 			title: "Create",
-			description: "Projects post their project ideas to create a shareable project page.",
+			description:
+				"Projects post their project ideas to create a shareable project page.",
 		},
 		{
 			title: "Connect",
@@ -49,4 +55,4 @@ export const siteConfig = {
 				"Projects and supporters collaborate to bring the project to life. Milestones and progress are tracked transparently on the blockchain.",
 		},
 	],
-};
+}

@@ -1,6 +1,6 @@
 import { ISuccessResult } from '@worldcoin/idkit';
 
-export const handleVerify = async (proof: ISuccessResult) => {
+export const postWorldcoinVerification = async (proof: ISuccessResult) => {
     const res = await fetch("/api/verify", { // route to your backend will depend on implementation
         method: "POST",
         headers: {

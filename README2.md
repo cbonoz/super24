@@ -24,15 +24,18 @@ Each page is deployed as it's own unique smart contract. And the smart contract'
 - **Optimism** for multichain transactions, enabling us to deploy on multiple Optimism Layer 2 chains at low cost.
 - **Base** the foundation of the Dcrowd smart contract - used for seamless payments and social interactions, ensuring compatibility with the broader Ethereum ecosystem.
 - **Worldcoin** for identity proof, ensuring secure and verified user identities. Users *cannot* create new fundraiser pages without validating their identity on chain via WorldCoin - this is checked at time of each new fundraiser creation.
+
+If using simulator/sandbox mode, use simulator.worldcoin.org from your mobile device to authenticate identity.
+
 - **EAS (Ethereum Attestation Service)** for secure and verifiable attestations, ensuring the legitimacy of projects. Visitors to each project page can endorse the entrepreneur. The attestation proofs also get sent to the smart contract and are emitted as events that can be listened to from external systems or triggers.
 - **Pyth** for real-time price feeds. Used to show an on-chain provided value for a donation supporter gold tier level in the Dcrowd app/UI.
 - **Blockscout**: Provides an improved UI for getting insight into on-chain transactions for each contract.as an alternative to Etherscan, providing transparent and detailed blockchain explorer services.
 
-The project was deployed on cloud infrastructure for easy access and scalability.
+This project is deployed on Vercel and is available in a preview/beta use case at <a href="https://dcrowd.vercel.app" target="_blank">dcrowd.vercel.app</a>.
 
 ### Challenges We Ran Into
 
-One of the main challenges we faced was integrating multiple blockchain technologies, each with its own set of APIs and protocols. For instance, ensuring seamless communication between Optimism and Base while maintaining transaction speed and security was a complex task. Additionally, this was our first time using EAS for attestations, which required a deep understanding of its API and integration process. Another challenge was deploying the project on Celo, particularly adapting our platform to meet the needs of users in underfunded regions where internet connectivity and financial literacy can be limited.
+One of the main challenges we faced was integrating multiple Optimism/L2 technologies, each with its own set of APIs and protocols. For instance, ensuring seamless communication between Optimism and Base while maintaining transaction speed and security was a complex task. Additionally, this was our first time using EAS for attestations, which required a deep understanding of its API and integration process. Another challenge was deploying the project on Celo, particularly adapting our platform to meet the needs of users in underfunded regions where internet connectivity and financial literacy can be limited.
 
 ### Accomplishments That We're Proud Of
 
