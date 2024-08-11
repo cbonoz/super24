@@ -19,7 +19,7 @@ Contract:
 Attestations:
 
 Mode testnet:
-Contract:
+Contract: https://sepolia.explorer.mode.network/address/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db
 
 ### Inspiration
 

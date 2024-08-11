@@ -330,7 +330,9 @@ function ProjectForm() {
 								clipRule="evenodd"
 							></path>
 						</svg>
-						<div className="text-xl mb-4">Project created successfully</div>
+						<div className="text-xl mb-4 mt-1">
+							Project created successfully
+						</div>
 						<div className="flex flex-col items-center">
 							<div className="text-gray-500 text-sm my-2">
 								Post or share the below url on your existing social channels
@@ -368,11 +370,9 @@ function ProjectForm() {
 							)}
 						</div>
 						<div>
-							<div className="mt-4">
-								<div className="text-gray-500 text-sm">
-									Verification hash: {form.watch("verificationHash")}
-								</div>
-							</div>
+							{/* <div className="mt-4">
+								<div className="text-gray-500 text-sm">Verification hash</div>
+							</div> */}
 						</div>
 					</div>
 				</div>
