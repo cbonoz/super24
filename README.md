@@ -11,18 +11,6 @@ Demo url: <a href="https://dcrowd.vercel.app" target="_blank">dcrowd.vercel.app<
 
 Demo video (~4min):
 
-
-### Example pages
-
-Base testnet: https://dcrowd.vercel.app/project/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
-Contract: https://base-sepolia.blockscout.com/address/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
-Attestations: https://base-sepolia.easscan.org/schema/view/0x8fe5b642d76f3a94f79c96aa4c4a3b07faf51bd321155ca94225be258a744fdd
-
-Payment via app contract (.001 ETH): https://base-sepolia.blockscout.com/tx/0xa6decd6635785d85cfe2f5bb89884532ca52e7a53e45491a107507fefdc11c76
-
-Mode testnet: https://dcrowd.vercel.app/project/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db
-Contract: https://sepolia.explorer.mode.network/address/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db
-
 ### Inspiration
 
 Dcrowd was built to address the challenges of transparency, accessibility, and efficiency in crowdfunding, particularly for projects in underfunded regions. Traditional platforms like Kiva and Kickstarter have limitations in terms of transaction transparency, funding flexibility, and global accessibility. These platforms often rely on centralized systems that can delay fund distribution, impose significant fees, and restrict access based on geographic and financial constraints. Inspired by these challenges, we aimed to create a decentralized alternative that doesn't require bank accounts and middlemen, and can be used to mediate funds directly between entrepreneurs and their supporters.
@@ -48,6 +36,17 @@ Each page is deployed as its own unique smart contract, and the smart contract's
 - **Blockscout**: Provides an improved UI for getting insight into on-chain transactions for each contract.as an alternative to Etherscan, providing transparent and detailed blockchain explorer services.
 
 This project is deployed on Vercel and is available in a preview/beta use case at <a href="https://dcrowd.vercel.app" target="_blank">dcrowd.vercel.app</a>.
+
+### Example pages
+
+Base testnet: https://dcrowd.vercel.app/project/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
+Contract: https://base-sepolia.blockscout.com/address/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
+Attestations: https://base-sepolia.easscan.org/schema/view/0x8fe5b642d76f3a94f79c96aa4c4a3b07faf51bd321155ca94225be258a744fdd
+
+Payment via app contract (.001 ETH): https://base-sepolia.blockscout.com/tx/0xa6decd6635785d85cfe2f5bb89884532ca52e7a53e45491a107507fefdc11c76
+
+Mode testnet: https://dcrowd.vercel.app/project/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db
+Contract: https://sepolia.explorer.mode.network/address/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db
 
 ### Challenges We Ran Into
 
