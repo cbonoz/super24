@@ -305,7 +305,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 									</Link>
 								</div>
 
-								{attestationUrl && (
+								{!isEmpty(attestationUrl) && (
 									<div className="flex flex-col">
 										<div className="text-sm text-gray-500">
 											Endorsements from the community

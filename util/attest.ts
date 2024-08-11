@@ -23,12 +23,12 @@ export const SCHEMA_MAP: Record<string, EasMetadata> = {
 }
 
 export const getAttestationUrl = (chainId?: number) => {
-	const attestationPrefix: any =
+	const attestationPrefix: EasMetadata =
 		SCHEMA_MAP[chainId || ""] || SCHEMA_MAP[baseSepolia.id]
 	if (!attestationPrefix) {
 		return ""
 	}
-	return `https://${attestationPrefix}.easscan.org/schema/view/${process.env.NEXT_PUBLIC_SCHEMA_ID}`
+	return `https://${attestationPrefix.explorer}.easscan.org/schema/view/${process.env.NEXT_PUBLIC_SCHEMA_ID}`
 }
 
 const ENDORSE_SCHEMA =

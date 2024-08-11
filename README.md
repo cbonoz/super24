@@ -15,7 +15,7 @@ Demo video (~4min):
 ### Example pages
 
 Base testnet:
-Contract:
+Contract: https://base-sepolia.blockscout.com/address/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
 Attestations:
 
 Mode testnet:
