@@ -53,7 +53,7 @@ One of the main challenges we faced was integrating multiple Optimism/L2 technol
 
 ### Accomplishments That We're Proud Of
 
-We are particularly proud of successfully integrating multiple blockchain technologies to create a seamless and user-friendly experience. The deployment on OP Stack networks such as Base/Mode to support projects in third-world countries stands out as a significant achievement, as it aligns with our mission to democratize access to funding. The use of Worldcoin for secure identity proof was another highlight, ensuring that humans, regardless of location, are the designated users that can create fundraisers (reducing or eliminating automated fradulent listings).
+We are particularly proud of successfully integrating multiple blockchain technologies to create a seamless and user-friendly experience. The deployment on OP Stack networks such as Base/Mode to support projects in third-world countries stands out as a significant achievement, as it aligns with our mission to democratize access to funding. The use of Worldcoin for secure identity proof was another highlight, ensuring that humans, regardless of location, are the designated users that can create fundraisers (reducing or eliminating automated fraudulent listings).
 
 ### What We Learned
 

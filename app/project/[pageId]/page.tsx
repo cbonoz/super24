@@ -118,7 +118,6 @@ export default function Dcrowd({ params }: { params: Params }) {
 			// It will include signed price updates if the binary option was provided to the connection constructor.
 			const price = priceFeed.getPriceNoOlderThan(REFRESH_RATE_SECONDS)
 			setEthPrice(price)
-
 			// console.log(
 			// 	`Received an update for ${priceFeed.id}: ${JSON.stringify(price)})`
 			// )
@@ -132,7 +131,11 @@ export default function Dcrowd({ params }: { params: Params }) {
 		return () => {
 			if (connection) {
 				console.log("Closing websocket connection")
-				connection.closeWebSocket()
+				try {
+					connection.closeWebSocket()
+				} catch (e) {
+					console.error("Error closing websocket connection", e)
+				}
 			}
 		}
 	}, [connection])
