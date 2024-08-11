@@ -9,7 +9,7 @@ Built for Superhack 2024
 
 Demo url: <a href="https://dcrowd.vercel.app" target="_blank">https://dcrowd.vercel.app</a> (currently Base/Mode L2 testnets)
 
-Demo video (~4min):
+Demo video (~4min): https://youtu.be/TQO5p2boaEM
 
 ### Inspiration
 
@@ -57,7 +57,9 @@ Contract: https://sepolia.explorer.mode.network/address/0x973Ec243E24Bf62b56b0F3
 
 2. `yarn; yarn dev`. The app should now be running on port 3000.
 
-3.  Go to `localhost:3000/admin`. Deploy a new instance of the Attestation schema, make a note of the ID generated.
+3.  Go to `localhost:3000/admin`. Deploy a new instance of the attestation schema, make a note of the ID generated. The admin section of the app is only needed to generate an appropriate schema id for the `.env` file.
+
+The schema id used in the demo site above is: 0x8fe5b642d76f3a94f79c96aa4c4a3b07faf51bd321155ca94225be258a744fdd
 
 4. Update the schema id from step (3) in `.env`. Restart the web server.
 
@@ -93,50 +95,38 @@ Building Dcrowd definitely gave an improved understanding of multichain deployme
 
 ## Screenshots
 
-
-### Attest
-<p align="center">
-  <img src="img/attest.png" alt="Attest" width="600">
-</p>
-
-### Create
-<p align="center">
-  <img src="img/create.png" alt="Create" width="600">
-</p>
-
 ### Home
 <p align="center">
   <img src="img/home.png" alt="Home" width="600">
 </p>
 
-### Project
+
+
+### Create project
 <p align="center">
-  <img src="img/project.png" alt="Project" width="600">
+  <img src="img/create.png" alt="Create" width="600">
 </p>
 
-### About
-<p align="center">
-  <img src="img/about.png" alt="About" width="600">
-</p>
 
-### WebSocket
-<p align="center">
-  <img src="img/websocket.png" alt="WebSocket" width="600">
-</p>
-
-### Worldcoin
+### Worldcoin verification
 <p align="center">
   <img src="img/worldcoin.png" alt="Worldcoin" width="600">
 </p>
 
-### Worldcoin Dashboard
-<p align="center">
-  <img src="img/worldcoin_dashboard.png" alt="Worldcoin Dashboard" width="600">
-</p>
 
-### Verified
+### Verified creator via worldcoin
 <p align="center">
   <img src="img/verified.png" alt="Verified" width="600">
+</p>
+
+### Successful creation
+<p align="center">
+  <img src="img/project.png" alt="Project" width="600">
+</p>
+
+### A unique project page and contract is generated for each campaign
+<p align="center">
+  <img src="img/project.png" alt="Project" width="600">
 </p>
 
 ### Payment
@@ -149,9 +139,34 @@ Building Dcrowd definitely gave an improved understanding of multichain deployme
   <img src="img/donate.png" alt="Donate" width="600">
 </p>
 
-### EAS
+### Endorse the legitamacy of projects/builders via attestations
+<p align="center">
+  <img src="img/attest.png" alt="Attest" width="600">
+</p>
+
+### Example error on donation
+<p align="center">
+  <img src="img/error.png" alt="Verified" width="600">
+</p>
+
+### EAS (example attestation for schema)
 <p align="center">
   <img src="img/eas.png" alt="EAS" width="600">
+</p>
+
+### Worldcoin Dashboard for app
+<p align="center">
+  <img src="img/worldcoin_dashboard.png" alt="Worldcoin Dashboard" width="600">
+</p>
+
+### About page
+<p align="center">
+  <img src="img/about.png" alt="About" width="600">
+</p>
+
+### Price feed websocket using Python
+<p align="center">
+  <img src="img/websocket.png" alt="WebSocket" width="600">
 </p>
 
 <!-- Optimism: Multichain - submit to multiple optimism L2 chains.
