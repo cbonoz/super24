@@ -12,7 +12,7 @@ import {
 	SchemaRegistry,
 } from "@ethereum-attestation-service/eas-sdk"
 import { ethers } from "ethers"
-import { baseSepolia } from "viem/chains"
+import { base, baseSepolia } from "viem/chains"
 
 export const SCHEMA_MAP: Record<string, EasMetadata> = {
 	[baseSepolia.id]: {
@@ -20,11 +20,16 @@ export const SCHEMA_MAP: Record<string, EasMetadata> = {
 		schema: BASE_SEPOLIA_SCHEMA_ADDRESS,
 		explorer: "base-sepolia",
 	},
+	[base.id]: {
+		eas: "0x4200000000000000000000000000000000000021",
+		schema: "0x4200000000000000000000000000000000000020",
+		explorer: "base",
+	},
 }
 
-export const getAttestationUrl = (chainId?: number) => {
+export const getAttestationUrl = (chainId: number) => {
 	const attestationPrefix: EasMetadata =
-		SCHEMA_MAP[chainId || ""] || SCHEMA_MAP[baseSepolia.id]
+		SCHEMA_MAP[chainId] || SCHEMA_MAP[baseSepolia.id]
 	if (!attestationPrefix) {
 		return ""
 	}
