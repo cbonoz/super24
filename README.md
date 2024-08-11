@@ -14,9 +14,9 @@ Demo video (~4min):
 
 ### Example pages
 
-Base testnet:
+Base testnet: dcrowd.vercel.app/project/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
 Contract: https://base-sepolia.blockscout.com/address/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
-Attestations:
+Attestations: https://base-sepolia.easscan.org/schema/view/0x8fe5b642d76f3a94f79c96aa4c4a3b07faf51bd321155ca94225be258a744fdd
 
 Mode testnet:
 Contract: https://sepolia.explorer.mode.network/address/0x973Ec243E24Bf62b56b0F338dd2704371DD5B2db

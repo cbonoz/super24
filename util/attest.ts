@@ -54,7 +54,7 @@ export const getSchema = async (
 	schemaId: string,
 	chainId: number
 ) => {
-	const schemaRegistryContractAddress = SCHEMA_MAP.baseSepolia.schema
+	const schemaRegistryContractAddress = SCHEMA_MAP[chainId].schema
 	const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress)
 	schemaRegistry.connect(provider)
 
@@ -90,14 +90,14 @@ export const registerSchema = async (signer: any, chainId: number) => {
 export const createAttestion = async (
 	signer: any,
 	data: Endorsement,
-	chainId?: number
+	chainId: number
 ) => {
 	const schemaUID = process.env.NEXT_PUBLIC_SCHEMA_ID
 	if (!schemaUID) {
 		throw new Error("Schema ID not found")
 	}
 
-	const attestAddress = SCHEMA_MAP.baseSepolia.eas
+	const attestAddress = SCHEMA_MAP[chainId].eas
 	const eas = new EAS(attestAddress)
 	eas.connect(signer)
 

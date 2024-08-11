@@ -1,54 +1,61 @@
-"use client";
+"use client"
 
-import BasicCard from "@/components/basic-card";
-import RenderObject from "@/components/render-object";
-import { Button } from "@/components/ui/button";
-import { useEthersSigner } from "@/lib/get-signer";
-import { getExplorerUrl, getReadableError, isEmpty } from "@/lib/utils";
-import { getSchema, registerSchema } from '@/util/attest';
-import { siteConfig } from "@/util/site-config";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { useState, useEffect } from "react";
-import { Chain } from "viem";
-import { useChainId, useChains } from "wagmi";
+import BasicCard from "@/components/basic-card"
+import RenderObject from "@/components/render-object"
+import { Button } from "@/components/ui/button"
+import { useEthersSigner } from "@/lib/get-signer"
+import { getExplorerUrl, getReadableError, isEmpty } from "@/lib/utils"
+import { getSchema, registerSchema } from "@/util/attest"
+import { siteConfig } from "@/util/site-config"
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { useState, useEffect } from "react"
+import { Chain } from "viem"
+import { baseSepolia } from "viem/chains"
+import { useChainId, useChains } from "wagmi"
 
 const AdminPage = () => {
-	const [result, setResult] = useState<any>();
-	const [error, setError] = useState<any>(null);
-	const [loading, setLoading] = useState(false);
+	const [result, setResult] = useState<any>()
+	const [error, setError] = useState<any>(null)
+	const [loading, setLoading] = useState(false)
 
-	const chainId = useChainId();
-	const chains = useChains();
-	const currentChain: Chain | undefined = (chains || []).find((c) => c.id === chainId);
+	const chainId = useChainId()
+	const chains = useChains()
+	const currentChain: Chain | undefined = (chains || []).find(
+		(c) => c.id === chainId
+	)
 
-	const signer = useEthersSigner({ chainId });
+	const signer = useEthersSigner({ chainId })
 
 	async function fetchSchema() {
 		if (signer && siteConfig.schemaId) {
-			const res = await getSchema(signer, siteConfig.schemaId, chainId);
-			console.log('schema:', res);
-			setResult(res);
+			const res = await getSchema(
+				signer,
+				siteConfig.schemaId,
+				chainId || baseSepolia.id
+			)
+			console.log("schema:", res)
+			setResult(res)
 		}
 	}
 
 	useEffect(() => {
-		fetchSchema();
-}, [signer, siteConfig.schemaId]);
+		fetchSchema()
+	}, [signer, siteConfig.schemaId])
 
 	async function createSchema() {
-		setLoading(true);
-		setError(null);
+		setLoading(true)
+		setError(null)
 
 		try {
 			// Deploy schema
-			const res = await registerSchema(signer, chainId);
-			console.log("schema deployed:", res);
-			setResult(res);
+			const res = await registerSchema(signer, chainId)
+			console.log("schema deployed:", res)
+			setResult(res)
 		} catch (err) {
-			console.error("Error deploying schema:", err);
-			setError(getReadableError(err));
+			console.error("Error deploying schema:", err)
+			setError(getReadableError(err))
 		} finally {
-			setLoading(false);
+			setLoading(false)
 		}
 	}
 
@@ -59,7 +66,8 @@ const AdminPage = () => {
 				{!siteConfig.schemaId && <p>schema id not set</p>}
 
 				<div className="text-md my-4">
-					Deploy a new schema instance to the {currentChain?.name || ""} blockchain.
+					Deploy a new schema instance to the {currentChain?.name || ""}{" "}
+					blockchain.
 				</div>
 
 				<Button onClick={createSchema} disabled={loading}>
@@ -82,11 +90,11 @@ const AdminPage = () => {
 				{result && (
 					<div className="mt-4">
 						<RenderObject title="Result" obj={result} />
-				</div>)}
-
-							</BasicCard>
+					</div>
+				)}
+			</BasicCard>
 		</div>
-	);
-};
+	)
+}
 
-export default AdminPage;
+export default AdminPage

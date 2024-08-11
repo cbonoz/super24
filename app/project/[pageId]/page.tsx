@@ -67,6 +67,7 @@ import { siteConfig } from "@/util/site-config"
 import { createAttestion, getAttestationUrl } from "@/util/attest"
 import { PYTH_PRICE_IDS, REFRESH_RATE_SECONDS } from "@/util/pyth"
 import BasicTooltip from "@/components/BasicTooltip"
+import { baseSepolia } from "viem/chains"
 
 interface Params {
 	pageId: string
@@ -230,7 +231,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 		}
 
 		try {
-			const res = await createAttestion(signer, data)
+			const res = await createAttestion(signer, data, chainId || baseSepolia.id)
 			setResult(res)
 		} catch (e) {
 			console.error("Error sending attestation:", e)
@@ -442,7 +443,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 									View transaction
 								</Link>
 							)}
-							<RenderObject excludeEmpty title="Success!" obj={result} />
+							<RenderObject excludeEmpty={true} title="Success!" obj={result} />
 						</div>
 					)}
 

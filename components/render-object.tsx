@@ -22,7 +22,7 @@ export default function RenderObject({
 	obj,
 	className,
 	style,
-	excludeEmpty = false,
+	excludeEmpty,
 	key,
 	keys = Object.keys(obj || {}),
 }: Props) {
@@ -56,6 +56,7 @@ export default function RenderObject({
 						return (
 							<RenderObject
 								key={i.toString()}
+								excludeEmpty={excludeEmpty}
 								obj={val}
 								className={className}
 							/>
