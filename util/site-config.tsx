@@ -1,10 +1,7 @@
-import { getExplorerUrl } from "@/lib/utils"
-import Link from "next/link"
-
 export const siteConfig = {
 	title: "Dcrowd",
 	description:
-		"A decentralized crowdfunding platform connecting projects with supporters through blockchain technology",
+		"A decentralized crowdfunding platform connecting projects with supporters through blockchain",
 	isLocal: process.env.NEXT_PUBLIC_ENV === "development",
 	schemaId: process.env.NEXT_PUBLIC_SCHEMA_ID as string,
 	admin: {
@@ -12,9 +9,9 @@ export const siteConfig = {
 			"The admin page contains information for managing project and supporter interactions.",
 	},
 	valueSentences: [
-		"Smart contract mediated crowdfunding for transparent and secure fundraising on Base and Optimism",
+		"Smart contract mediated crowdfunding for transparent fundraising on Base and Optimism",
 		"Identity verification for entrepreneurs via Worldcoin with endorsements by supporters",
-		"Global payments enabled via smart contract transactions. No bank account required",
+		"Global payments enabled via smart contract transactions. No bank accounts required",
 	],
 	create: {
 		description:
