@@ -184,7 +184,7 @@ export default function Dcrowd({ params }: { params: Params }) {
 		if (data?.title) {
 			return (
 				<div>
-					<div className="text-2xl">{data?.title}</div>
+					<div className="text-3xl">{data?.title}</div>
 					{data?.ownerName && (
 						<div className="font-thin text-sm">
 							A project by <span className="">{data.ownerName}</span>
@@ -244,13 +244,14 @@ export default function Dcrowd({ params }: { params: Params }) {
 	const attestationUrl = getAttestationUrl(chainId)
 
 	return (
-		<div className="bg-black px-32 h-full">
+		<div className="bg-black px-16 h-full">
 			{!!data?.videoUrl && (
-				<div className="flex justify-center">
+				<div className="flex flex-col items-center justify-center">
 					<ReactPlayer
+						className="w-full justify-center max-w-[1000px]"
 						url={data.videoUrl}
 						controls={true}
-						height="800px"
+						height="600px"
 						width="100%"
 					/>
 				</div>
