@@ -44,8 +44,7 @@ This project is deployed on Vercel and is available in a preview/beta use case a
 * Test campaign: https://dcrowd.vercel.app/project/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
 * Contract: https://base-sepolia.blockscout.com/address/0xBe352A988705c16b80eEA48b6afBadD4da1117a4
 * Attestations: https://base-sepolia.easscan.org/schema/view/0x8fe5b642d76f3a94f79c96aa4c4a3b07faf51bd321155ca94225be258a744fdd
-
-Payment via app contract (.001 ETH): https://base-sepolia.blockscout.com/tx/0xa6decd6635785d85cfe2f5bb89884532ca52e7a53e45491a107507fefdc11c76
+* Payment via app contract (.001 ETH): https://base-sepolia.blockscout.com/tx/0xa6decd6635785d85cfe2f5bb89884532ca52e7a53e45491a107507fefdc11c76
 
 #### Mode Sepolia
 
