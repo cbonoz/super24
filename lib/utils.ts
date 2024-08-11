@@ -4,6 +4,7 @@ import { Chain } from "viem"
 import { ethers } from "ethers"
 import { BLOCKSCOUT_MAP } from "@/util/blockscout"
 import { act } from "react"
+import { base } from "viem/chains"
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -35,10 +36,6 @@ export const getExplorerUrl = (
 	chain?: Chain,
 	isTx?: boolean
 ) => {
-	if (!address) {
-		return ""
-	}
-	const prefix = isTx ? "tx" : "address"
 	const blockscoutUrl = BLOCKSCOUT_MAP[chain?.id || ""]
 	let baseUrl
 	if (blockscoutUrl) {
@@ -49,7 +46,11 @@ export const getExplorerUrl = (
 
 	if (!baseUrl) {
 		return ""
+	} else if (!address) {
+		return baseUrl
 	}
+
+	const prefix = isTx ? "tx" : "address"
 	return `${baseUrl}/${prefix}/${address}`
 }
 
